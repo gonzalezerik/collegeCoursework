@@ -1,18 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Define structures and global variables*/
+void menuFunc(void);
+void getSel(void);          // or: int getSel(void);  (see note below)
+void choiceFunc(int choice);
+void firstProc(void);
+void secondProc(void);
+void thirdProc(void);
+void fourthProc(void);
 
 
-int main() {
-	/* declare local vars */
-	/* while user has not chosen to quit */
-		/* print menu of options */
-		/* prompt for menu selection */
-		/* call appropriate procedure based on choice--use switch statement or series of if, else if, else statements */	
-	 /* while loop */
 
-    int choice;
+void choiceFunc(int choice){
+switch (choice) {
+
+        case 1:
+            firstProc();
+            break;
+        case 2:
+            secondProc();
+            break;
+        case 3:
+            thirdProc();
+            break;
+        case 4:
+            fourthProc();
+            break;
+    }
+
+}
+
+void getSel(){
+    int sel;
+    printf("Enter selection: ");
+    scanf("%d", &sel);
+    choiceFunc(sel);
+}
+
+void menuFunc(){
 
     printf("Process creation and desctruction\n");
     printf("----------------------------------\n");
@@ -20,28 +45,37 @@ int main() {
     printf("2) Create a new child process\n");
     printf("3) Destroy all descendants of a process\n");
     printf("4) Quit program and free memory\n");
-    printf("\nEnter selection: ");
-    scanf("%d",&choice);
+    getSel();
+}
+/* Define structures and global variables*/
+void firstProc(){
+    printf("first procedure\n");
+    menuFunc();
 
     
-    switch (choice) {
+}
+void secondProc(){
+    printf("second procedure");
+    menuFunc();
+    
+}
 
-        case 1:
-            printf("case 1");
-            break;
-        case 2:
-            printf("case 2");
-            break;
-        case 3:
-            printf("case 3");
-            break;
-        case 4:
-            printf("case 4");
-            break;
-    }
+void thirdProc(){
+    printf("third procedure");
+    menuFunc();
+}
+
+void fourthProc(){
+    printf("fourth procedure");
+    menuFunc();
+}
 
 
 
 
-	 return 1; /* indicates success */
-} /* end of procedure */
+int main() {
+
+
+    menuFunc();    
+	return 1; 
+} 
