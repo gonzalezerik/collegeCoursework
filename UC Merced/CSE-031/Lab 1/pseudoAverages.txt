@@ -1,0 +1,6 @@
+TPS 4:
+	declare variables
+	Declare a while loops that loops until the user inputs 0
+	run a series of even and odd checks to add evens and odds seperatly
+	calculate average
+	print

@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+
+\title{Homework 3}
+\author{Erik Gonzalez}
+
+\begin{document}
+\maketitle
+
+
+
+\section*{Knights and Knaves:}
+
+
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+Case & P & Q \\ 
+1 & Knight & Knight \\ 
+2 & Knave & Knight \\ 
+3 & Knight & Knave \\
+4 & Knave & Knave \\
+ \hline
+\end{tabular}
+\end{center}
+
+
+\begin{itemize}
+\item Knave: always tells lie
+\item Knight: always tells truth 
+\item If P is a Knight then whatever he/she says is true. If P is a Knave, whatever he/she says is false. If P was a Knight, case 1 can't happen, but 3 can. if P was a knave, both case 2 and 4 couldn't have happen because no matter what the knave says, will be false. Row 3 is the only possible case.
+\end{itemize}
+
+
+ 
+ 
+ 
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+Case & P & Q \\ 
+1 & Knight & Knight \\ 
+2 & Knave & Knight \\ 
+3 & Knight & Knave \\
+4 & Knave & Knave \\
+ \hline
+\end{tabular}
+\end{center}
+
+ \begin{itemize}
+\item  If P is a Knight then what he says would be true.. If P is a knave then what he says would be False. If P was a knight, case 1 and 3 couldn't have happened. If P was a knave, 4 couldn't have happened because whatever they say is a false. This leave case 2 being the only possible case.
+\end{itemize}
+
+
+\section*{Logical Identities: }
+
+\begin{itemize}
+\item $-(p \to (q \to p))$
+
+ \begin{itemize}
+\item Implication Law: $p \to q \equiv \neg q \vee p $. so, $ \neg (p \to (\neg q \vee p) $
+\item Implication Law: $ \neg ( \neg p \vee (\neg q \vee p))$
+\item De Morgans's Law: $\neg (a \vee b) \equiv \neg a \wedge \neg b,$  $\neg p \equiv  a $ $ and $ $(\neg q \vee p) \equiv b $ 
+\begin{itemize}
+\item $ \neg( \neg p) \wedge \neg ( \neg q \vee p)$
+\end{itemize}
+\item De Morgans's Law: $\neg (a \vee b)$ $ \equiv $ $\neg a \wedge \neg b,$
+\begin{itemize}
+\item $\neg q $ is a 
+\item p is b 
+\item $ \neg (\neg p) \wedge \neg(\neg q) \wedge \neg p$
+\end{itemize}
+\item double negation law: $\neg (\neg p ) \equiv p $ 
+\begin{itemize}
+\item $p \wedge q \wedge \neg p $
+\item $p \wedge \neg p \wedge q $
+\end{itemize}
+\item $p \wedge \neg p \equiv F $, thus 
+\item $FALSE \wedge q  \equiv q $
+\end{itemize}
+\end{itemize}
+
+
+
+ \begin{itemize}
+\item $-p((p \wedge  q) \to (q \vee p))$
+
+ \begin{itemize}
+ \item Let $(p \wedge q)$ be a, $(q \vee p)$ be b 
+\item Implication Law, $ p \to q \equiv \neg p \vee q $
+ \begin{itemize}
+ \item $ \neg a \vee b $
+ \end{itemize}
+\item Substituting the values of a and b,
+ \begin{itemize}
+ \item $ \neg (p \wedge q) \vee ( q \vee p)$ 
+ \end{itemize}
+\item De Morgan's Law: $ \neg(p \wedge q) \equiv \neg p \vee  \neg q$ 
+ \begin{itemize}
+ \item $\neg p \vee \neg q \vee (q \vee p)$ ----------- 1
+\end{itemize}
+\item associative law: $(p \vee q) \vee r \equiv p \vee (q \vee r) $
+\item Rearranging 1, 
+ \begin{itemize}
+ \item $(\neg p \vee p) \vee (\neg q \vee q)$
+\end{itemize}
+\item negation laws, $ p \vee \neg p \equiv T$
+\item $TRUE \vee TRUE$ $ \equiv TRUE$
+\end{itemize}
+\end{itemize}
+
+
+\section*{Logical Equivalences}
+
+
+\begin{itemize}
+\item $ p \to (q \to r)$ and $(p \wedge q) \to r $
+
+ \begin{itemize}
+\item Answer: $ p \to (q \to r)$ $ \ne  $ $(p \wedge q) \to r $
+
+\vskip 0.1in
+
+\vskip 0.1in
+
+
+
+\end{itemize}
+
+ \end{itemize} 
+
+
+
+
+
+
+
+\begin{itemize}
+\item $ p \to (q \to r)$ and $ (p \to q) \to r$
+
+ \begin{itemize}
+\item Answer: $ p \to (q \to r)$ $ \ne  $ $ (p \to q) \to r$
+
+
+
+
+\end{itemize}
+
+ \end{itemize} 
+
+
+
+
+
+
+
+\section*{Logical Consequence}
+
+
+
+\begin{itemize}
+\item 1. 
+
+Jimmy is smart
+\vskip 0.1in
+Smart People are rich
+\vskip 0.1in
+ \textbf{----------------------------}
+\vskip 0.1in
+Jimmy is Rich 
+ \vskip 0.1in
+ 
+ 
+ \textbf{Answer:} Valid: Jimmy is rich 
+ 
+ Jimmy is smart
+\vskip 0.1in
+Jimmy then smart
+\vskip 0.1in
+Jimmy $\to$ smart
+
+Smart People are rich
+\vskip 0.1in
+Smart then rich 
+\vskip 0.1in
+Smart $\to$ rich 
+\vskip 0.1in
+Jimmy $\to$ rich $\equiv$ Jimmy is rich 
+
+  
+
+
+ \end{itemize} 
+    
+    
+    
+    
+   
+ 
+\begin{itemize}
+\item 2. 
+
+Islands are surrounded by water
+\vskip 0.1in 
+Puerto Rico is surrounded by water
+\vskip 0.1in 
+\textbf{--------------------------------------}
+\vskip 0.1in 
+Puerto Rico is an island
+\vskip 0.1in
+
+
+ \textbf{Answer:}  Not Valid: We cannot say Puerto Rico is an island is always true. 
+ 
+ Islands are surrounded by water
+ \vskip 0.1in
+ Islands $\to$ surrounded by water
+ \vskip 0.1in
+  Puerto Rico is surrounded by water
+ \vskip 0.1in
+ Puerto Rico $\to$ surrounded by water
+  \vskip 0.1in
+  Puerto Rico is not always an island 
+  
+   
+   
+ \end{itemize} 
+
+
+
+
+
+
+\end{document}

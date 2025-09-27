@@ -1,0 +1,41 @@
+TPS 1:
+	1. Adrian McBroom
+
+	2. 
+	   a) https://maker.pro/linux/tutorial/basic-linux-commands-for-beginners
+  	   b) https://www.howtogeek.com/140679/beginner-geek-how-to-start-using-the-linux-terminal/
+   	   c) https://ryanstutorials.net/linuxtutorial/
+
+ TPS 2:
+
+	1. You can open a linux terminal with the keybind ctrl + alt + T
+		a) yes you can
+		b) multitasking
+
+	2. ls
+
+	3. cd Desktop/
+	
+	4. mkdir CSE31
+
+TPS 3: 
+
+	1: https://medium.com/@laura.derohan/compiling-c-files-with-gcc-step-by-step-8e78318052
+	   https://web.stanford.edu/class/archive/cs/cs107/cs107.1212/resources/gcc
+
+	2.
+
+	3. gcc main.c
+
+	4. when nothing happens, gcc will tell me the error and why it did not compile
+
+	5. -c compiles the files, but does not link them. It will compile it as a .o
+
+	6. -g gives us debugging information
+	
+	7. gcc -o cselab1 main.c 
+
+	8. it compiles and output a file named "a.out"
+
+	9. ./a.out
+

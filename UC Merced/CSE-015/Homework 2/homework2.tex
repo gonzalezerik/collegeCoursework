@@ -1,0 +1,169 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+
+\title{CSE 15: Homework 2}
+\author{Erik Gonzalez }
+\date{February 15, 2020}
+
+\begin{document}
+
+\maketitle
+
+\section*{Knowledge Representation}
+
+\begin{itemize}
+\item It is not cloudy and it is not raining. 
+
+\begin{itemize}
+    \item p = It is not cloudy 
+    \item q = it is not raining
+    \item $-p \wedge -q$
+\end{itemize} 
+\end{itemize}
+
+\begin{itemize}
+    \item I like to eat apples and bananas.
+\begin{itemize}
+    \item p = I like to eat apples
+    \item q = I like to eat bananas
+    \item $p \wedge q$
+\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+    \item Behind the clouds the sun is shining.
+\begin{itemize}
+    \item p = Behind the clouds the sun is shining
+    \item p
+\end{itemize}
+\end{itemize}
+ 
+\begin{itemize}
+    \item If a function is differentiable then the function is continuous.
+\begin{itemize}
+    \item p = If a function is differentiable 
+    \item q = The function is continuous
+    \item $p \to q$
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item I will study for the final otherwise I will fail.
+\begin{itemize}
+    \item p = I will study for the final 
+    \item q = I will fail
+    \item $p \to q$
+\end{itemize}
+\end{itemize}
+ 
+
+\section*{Equivalence in Propositional Logic}
+
+\begin{itemize}
+    \item $p \land q $ and $p \lor \lnot q$
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+$p$ & $q$ & $p \land q$ & $p \lor  \lnot q$ \\
+\hline
+0 & 0 & 0 & 1 \\
+0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\begin{itemize}
+    \item They are not equivalent 
+    \item p = True, q = False
+    \item $True \land False = False$ 
+    \item $True \lor \lnot False = True$
+\end{itemize}
+\end{itemize}
+
+
+
+\begin{itemize}
+    \item $p \lor q $ and $\lnot p \lor \lnot q$
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+$p$ & $q$ & $p \lor q$ & $ \lnot p \lor  \lnot q$ \\
+\hline
+0 & 0 & 0 & 1 \\
+0 & 1 & 1 & 1 \\
+1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\begin{itemize}
+    \item They are not equivalent.
+    \item p = False, q = False
+    \item $False \lor False = False$ 
+    \item $\lnot False \lor \lnot False = True$
+\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+    \item $p \to q $ and $\lnot q \to \lnot p$
+    
+\begin{tabular}{|c|c|c|c|}
+\hline
+$p$ & $q$ & $p \to q$ & $ \lnot q \to  \lnot p$ \\
+\hline
+0 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1 \\
+1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\begin{itemize}
+    \item They are equivalent
+    \item The rows on the Truth Table match
+\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+    \item $p \to q $ and $\lnot p \lor  q$
+    
+\begin{tabular}{|c|c|c|c|}
+\hline
+$p$ & $q$ & $p \to q$ & $ \lnot p \lor q$ \\
+\hline
+0 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1 \\
+1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\begin{itemize}
+    \item They are equivalent
+    \item The rows on the Truth Table match
+\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+    \item $\lnot (p \land q) $ and $\lnot p \lor \lnot q $
+    
+\begin{tabular}{|c|c|c|c|}
+\hline
+$p$ & $q$ & $ \lnot (p \land q)$ & $ \lnot p \lor  \lnot q$ \\
+\hline
+0 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1 \\
+1 & 0 & 1 & 1 \\
+1 & 1 & 0 & 0 \\
+\hline
+\end{tabular}
+\begin{itemize}
+    \item They are equivalent
+    \item The rows on the Truth Table match
+\end{itemize}
+\end{itemize}
+
+\end{document}
+

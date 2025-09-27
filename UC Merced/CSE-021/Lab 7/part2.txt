@@ -1,0 +1,25 @@
+1. you can tell by the name, the name of a constructor is the same as the class to which it belongs to.
+
+2. yes
+
+3. Well it wouldn't make sense to use private in this program
+
+4. It would if it were used to allow the user to enter his/her own names for the cheeses
+
+5. You can tell because class variables are shared between a class, while instance variables do not
+
+6. you could but it would mean nothing as it's just assiging the same value
+
+7. by the output/action it performs
+
+8. it like binds two objects together to perform special functions
+
+9 Yes you could
+
+10. I personally can't tell, i have to learn more about this
+
+11. im not sure
+
+12. 0
+
+13. 

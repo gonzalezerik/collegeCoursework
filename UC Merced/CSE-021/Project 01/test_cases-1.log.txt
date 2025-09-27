@@ -1,0 +1,160 @@
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 1
+Please enter the number of items to setup shop: 3
+
+Enter the name of the 1st product: apple
+Enter the per package price of apple: 40
+Enter the number of packages ('x') to qualify for Special Discount (buy 'x' get 1 free) 
+for apple, or 0 if no Special Discount offered: 3
+Enter the name of the 2nd product: orange
+Enter the per package price of orange: 10
+Enter the number of packages ('x') to qualify for Special Discount (buy 'x' get 1 free) 
+for orange, or 0 if no Special Discount offered: 5
+Enter the name of the 3rd product: banana
+Enter the per package price of banana: 30
+Enter the number of packages ('x') to qualify for Special Discount (buy 'x' get 1 free) 
+for banana, or 0 if no Special Discount offered: 4
+
+Enter the dollar amount to qualify for Additional Discount (or 0 if none offered): 300
+Enter the Additional Discount rate (e.g., 0.1 for 10%): 0.4
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 3
+
+You have not bought anything!
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 2
+Enter the number of apple packages to by: 10
+Enter the number of orange packages to by: 20
+Enter the number of banana packages to by: 30
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 3
+
+10.0 packages of apple @ $40.00 per pkg = $400.00
+20.0 packages of orange @ $10.00 per pkg = $200.00
+30.0 packages of banana @ $30.00 per pkg = $900.00
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 4
+
+Original Sub Total: 		$1500.00
+Special Discounts: 		-$300.00
+New Sub Total: 			$1200.00
+Additional 40% Discount: 	-$480.00
+Final Sub Total: 		$720.00
+
+Thanks for coming!
+
+----------------------------------------------
+Would you like to re-run (1 for yes, 0 for no)? 1
+----------------------------------------------
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 3
+
+Shop is not set up yet!
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 2
+
+Shop is not set up yet!
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 4
+
+Shop is not set up yet!
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 1
+Please enter the number of items to setup shop: 1
+
+Enter the name of the 1st product: apple
+Enter the per package price of apple: 10
+Enter the number of packages ('x') to qualify for Special Discount (buy 'x' get 1 free) 
+for apple, or 0 if no Special Discount offered: 3
+
+Enter the dollar amount to qualify for Additional Discount (or 0 if none offered): 20
+Enter the Additional Discount rate (e.g., 0.1 for 10%): 0.2
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 3
+
+You have not bought anything!
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 2
+Enter the number of apple packages to by: 12
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 3
+
+12.0 packages of apple @ $10.00 per pkg = $120.00
+
+This program supports 4 functions: 
+	1. Setup Shop
+	2. Buy
+	3. List Items
+	4. Checkout
+Please choose the function you want: 4
+
+Original Sub Total: 		$120.00
+Special Discounts: 		-$24.00
+New Sub Total: 			$96.00
+Additional 20% Discount: 	-$19.20
+Final Sub Total: 		$76.80
+
+Thanks for coming!
+
+----------------------------------------------
+Would you like to re-run (1 for yes, 0 for no)? 0
+----------------------------------------------
