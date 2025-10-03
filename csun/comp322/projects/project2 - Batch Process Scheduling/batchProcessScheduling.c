@@ -33,12 +33,13 @@ void newLine(void);
 void enterFun(int);
 void printTable(int);
 void display(int field, char *buf, size_t size);
-void fifo(int);
+void fifo(struct Best comp, int num);
 void reset(int);
 void initClk(int);
-void scan(int, int, int);
+void scan(int num, int flag);
 int maxInt(int, int);
 void sjf(int num);
+struct Best compare(struct Best best, int flag, int i);
 
 void newLine(void){
     puts("");
@@ -71,7 +72,8 @@ bool selFunc(int vrfdSel){
             break;
         case 2:
             paramCheck();
-            fifo(num);            
+            scan(num, 2);
+            reset(num);
             return true;
             break;
         case 3:
@@ -129,7 +131,7 @@ void enterFun(int num){
         
         
     }
-    
+    reset(num); 
     printTable(num);
   
 }
@@ -145,7 +147,7 @@ void printTable(int num){
         display(table[i].turnArnd, bufTurn, sizeof(bufTurn));
 
         printf("%-7d %-7d %-7d %-7s %-7s %-10s\n", table[i].id, table[i].arvl, table[i].totalCycles, bufStart, bufEnd, bufTurn);
-        reset(num);
+        
     }
     newLine();
 }
@@ -161,15 +163,8 @@ void display(int field, char *buf, size_t size) {
 
 
 
-void initClk(int num){
-    clk = table[0].arvl;
-    for (int i = 1; i < num; i++){
-        if(table[i].arvl < clk){
-            clk = table[i].arvl;
-        }
-    }
-    }
-in 
+
+ 
 void reset(int num){
     for(int i = 0; i < num; i++){
         table[i].done = 0;
@@ -180,34 +175,75 @@ void reset(int num){
     clk = 0;
 }
 
-void scan(int i, int num, int flag){
+void scan(int num, int flag){
+    printf("\n----SCAN FUNCTION-----\n");
+    newLine();
+    int i = 0;
     struct Best best = {.index = -1, .value = INT_MAX};
+    puts("init best");
+    printf("best.value: %d \n best.index: %d\n", best.value, best.index);
+    newLine();
     do {
         if(table[i].done!= 1){
-            int value;
             switch(flag){
-                case 1:
-                    break;
                 case 2:
-                    value = table[i].arvl;
-
+                    newLine();
+                    puts("case2:\n");
+                    printf("best = compare((best.value[%d], best.index[%d]) , flag: %d , i: %d\n", best.value, best.index, flag, i);
+                    fifo(compare(best, flag, i), num);
                     break;
                 case 3:
-                    
                     break;
                 case 4:
                     break;
-                }
-            }
+            } 
+            i++;
+        } 
+        
     }while(i < num);
+    printTable(num);        
 }
 
-void fifo(int num){
-    reset(num);
-    for(int i = 0; i < num; i++){
-        scan(i, num);
+struct Best compare(struct Best best, int flag, int i){
+    puts("-----Entering compare-------");
+    newLine();
+    int value;
+    switch(flag){
+        case 2:
+            value = table[i].arvl;
 
+            break;
+        case 3:
+            if (table[i].arvl < clk){
+                value = table[i].totalCycles;
+            }   
+            break;
+        case 4:
+            if (table[i].arvl > clk){
+                value = table[i].totalRem;
+            }
+            break;
     }
+    if (value < best.value){
+        best.value = value;
+        best.index = i;
+        } else if (value == best.value) {
+        if (table[i].arvl < table[best.index].arvl){
+            best.index = i;
+            best.value = value;
+        }
+    }
+    puts("returning best after compare");
+    printf("best.value: %d\n best.index: %d\n", best.value, best.index);
+    return best;
+}
+void fifo(struct Best comp,int num){ 
+        table[comp.index].start = maxInt(table[comp.index].arvl,clk);
+        table[comp.index].end = table[comp.index].start + table[comp.index].totalCycles;
+        table[comp.index].turnArnd = table[comp.index].end - table[comp.index].arvl;
+        clk = table[comp.index].end; 
+        table[comp.index].done = 1;
+}
 
 
     /*
@@ -222,9 +258,8 @@ void fifo(int num){
             clk = table[i].end;
             table[i].done = 1;
         }
-    }*/
-    printTable(num);
-}
+    }*/ 
+
 
 int maxInt(int arvl, int currClk){
     
