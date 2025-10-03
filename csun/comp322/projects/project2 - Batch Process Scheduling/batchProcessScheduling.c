@@ -3,17 +3,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdbool.h>
-int i = 0;
-void menuFunc(void);
-bool selFunc(int);
-int getSel(void);
-int verifySel(void);
-int paramCheck(void);
-void newLine(void);
-void enterFun(int);
-void printTable(int);
-const char *display(int);
-void fifo(int);
 
 struct node {
 
@@ -28,6 +17,27 @@ struct node {
     int turnArnd;
 } *table = NULL;
 
+struct early {
+    int value;
+    int index;
+} *earliest;
+
+
+int i = 0;
+int clk;
+void menuFunc(void);
+bool selFunc(int);
+int getSel(void);
+int verifySel(void);
+int paramCheck(void);
+void newLine(void);
+void enterFun(int);
+void printTable(int);
+const char *display(int);
+void fifo(int);
+void reset(int);
+void initClk(int);
+struct early scan(int,int);
 
 void newLine(void){
     puts("");
@@ -107,7 +117,7 @@ int paramCheck(void){
 
 void enterFun(int num){
     table = malloc(num * sizeof(struct node));
-
+    earliest = malloc(num * sizeof(struct early));
     for(i = 0;i < num; i++){
         printf("Enter process id: ");
         scanf("%d", &table[i].id);
@@ -122,6 +132,7 @@ void enterFun(int num){
         table[i].end = -1;
         table[i].turnArnd = -1;
     }
+    initClk(num);
     printTable(num);
   
 }
@@ -145,15 +156,14 @@ const char *display(int field){
  
 
 }
-int initClk(int num){
-    int clk = table[0].arvl;
+void initClk(int num){
+    clk = table[0].arvl;
     for (i = 1; i < num; i++){
         if(table[i].arvl < clk){
             clk = table[i].arvl;
         }
     }
-    return clk;
-}
+    }
 
 void reset(int num){
     for(i = 0; i < num; i++){
@@ -161,10 +171,24 @@ void reset(int num){
     }
 }
 
+struct early scan(int j, int val){
+    
+    
+           
+}
+
 void fifo(int num){
     reset(num);
+    struct early *arr = (malloc(num * sizeof(struct early)));
 
+    for(i = 0; i <= num; i++){
+        while(table[i].done == 0){ 
+            for(int j = 1; j < num; j++){
+                arr[i] = scan(num, table[j-1].arvl);
+            }
+        }
 
+    }
 }
 
 void sjf(void){
