@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdbool.h>
-int i;
+int i = 0;
 void menuFunc(void);
 bool selFunc(int);
 int getSel(void);
@@ -13,6 +13,8 @@ void newLine(void);
 void enterFun(int);
 void printTable(int);
 const char *display(int);
+void fifo(void);
+
 struct node {
 
     int id;
@@ -58,6 +60,7 @@ bool selFunc(int vrfdSel){
             break;
         case 2:
             paramCheck();
+            fifo(num);
             puts("case2");
             
             return true;
@@ -105,7 +108,7 @@ int paramCheck(void){
 void enterFun(int num){
     table = malloc(num * sizeof(struct node));
 
-    for(i = 0; i < num; i++){
+    for(i = 0;i < num; i++){
         printf("Enter process id: ");
         scanf("%d", &table[i].id);
         
@@ -142,7 +145,18 @@ const char *display(int field){
  
 
 }
+int initClk(int num){
+    int clk = table[0].arvl;
+    for (i = 1; i < num; i++){
+        if(table[i].arvl < clk){
+            clk = table[i].arvl;
+        }
+    }
+    return clk;
+}
+
 void fifo(void){
+
 
 }
 
