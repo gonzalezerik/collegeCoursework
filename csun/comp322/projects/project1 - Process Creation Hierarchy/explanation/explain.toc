@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}main}{2}{section.1}%
+\contentsline {section}{\numberline {2}getSel}{2}{section.2}%
+\contentsline {section}{\numberline {3}menuFunc}{3}{section.3}%
+\contentsline {section}{\numberline {4}selFunc}{3}{section.4}%
+\contentsline {section}{\numberline {5}maxProc}{4}{section.5}%
+\contentsline {section}{\numberline {6}initArr}{4}{section.6}%
+\contentsline {section}{\numberline {7}freeMem}{4}{section.7}%
+\contentsline {section}{\numberline {8}create}{5}{section.8}%
+\contentsline {section}{\numberline {9}destroyDesc}{6}{section.9}%
+\contentsline {section}{\numberline {10}destroySubTree}{6}{section.10}%
+\contentsline {section}{\numberline {11}printParentChildren}{7}{section.11}%

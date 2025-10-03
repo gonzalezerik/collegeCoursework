@@ -1,0 +1,423 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{titlesec}
+
+% --- Rose Pine Moon-inspired palette + black background ---
+\definecolor{codebg}{HTML}{000000}   % black background
+\definecolor{textfg}{HTML}{E0DEF4}   % main text
+\definecolor{subtle}{HTML}{6E6A86}   % comments
+\definecolor{rose}{HTML}{EB6F92}     % keywords
+\definecolor{pine}{HTML}{9CCFD8}     % strings
+\definecolor{iris}{HTML}{C4A7E7}     % identifiers
+\definecolor{gold}{HTML}{F6C177}     % numbers
+
+\lstdefinestyle{rose-pine-moon}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{textfg},
+  keywordstyle=\color{rose}\bfseries,
+  stringstyle=\color{pine},
+  commentstyle=\color{subtle}\itshape,
+  numberstyle=\tiny\color{gold},
+  identifierstyle=\color{iris},
+  numbers=left,
+  stepnumber=1,
+  frame=single,
+  rulecolor=\color{subtle},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  keepspaces=true,
+  upquote=true
+}
+\lstset{style=rose-pine-moon}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.75em}{}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{\fill}
+
+{\LARGE Lab Assignment 1 Report: Process Creation Hierarchy \par}
+\vspace{1cm}
+{\large Erik Gonzalez \par}
+COMP 322\textbackslash L Operating Systems \par
+Professor: David Freedman \par
+September 27, 2025\vspace{2cm}
+
+
+This report explains my C program in the order it actually runs: starting from 
+\texttt{main}, through the menu loop, selection dispatch, array initialization, 
+process creation, descendant destruction, and quitting/freeing memory.
+
+\vspace*{\fill}
+\end{titlepage}
+\newpage
+\section*{\texttt{main}}
+\begin{lstlisting}[language=C]
+int main(void){
+    pcb *dynaArr = NULL;
+    int max = 0;
+    int sel;
+    do {
+        sel = getSel();
+        selFunc(sel, &dynaArr, &max);
+    } while (sel != 4);
+    return 0;
+}
+\end{lstlisting}
+
+The \texttt{main} function is the entry point of the program.
+
+\begin{itemize}
+  \item \textbf{PCB array pointer:} It begins by declaring \texttt{pcb *dynaArr = NULL}. 
+  This pointer will eventually hold the address of the dynamically allocated PCB array, 
+  but it starts as \texttt{NULL} to signal that no array has been created yet.
+
+  \item \textbf{Maximum size:} It declares \texttt{int max = 0}, which will store the 
+  maximum number of processes chosen by the user when option 1 (Enter parameters) is selected. 
+  Until then, the value remains 0.
+
+  \item \textbf{Menu selection:} It declares \texttt{int sel}, which will keep track 
+  of the user’s most recent menu choice.
+
+  \item \textbf{Looping structure:} The \texttt{do-while} loop ensures that the menu 
+  will always be displayed at least once. Inside the loop:
+  \begin{itemize}
+    \item \texttt{getSel()} is called to print the menu and return the user’s choice.
+    \item The user input, along with the PCB array pointer and max size, is then passed to 
+    \texttt{selFunc()}, which holds a switch statment to select the correct function (initialize, create, destroy, or quit).
+  \end{itemize}
+
+  \item \textbf{Exit:} The loop continues to run until the user enters 
+  option 4. At that point, \texttt{selFunc()} handles cleanup by freeing all memory, 
+  and the loop condition \texttt{(sel != 4)} fails, exiting the program.
+
+  
+\end{itemize}
+
+
+\newpage
+\section*{\texttt{menuFunc}}
+\begin{lstlisting}[language=C]
+void menuFunc(void){
+    puts("\nProcess creation and destruction");
+    puts("-----------------------------------");
+    puts("1) Enter parameters");
+    puts("2) Create a new child process");
+    puts("3) Destroy all descendants of a process");
+    puts("4) Quit program and free memory\n");
+}
+
+\end{lstlisting}
+
+The \texttt{menuFunc} function prints the program’s user menu. 
+
+
+\begin{itemize}
+  
+  \item It prints four options:
+  \begin{enumerate}
+    \item Enter parameters (to set the maximum number of processes).
+    \item Create a new child process.
+    \item Destroy all descendants of a process.
+    \item Quit program and free memory.
+  \end{enumerate}
+
+  \item The function uses \texttt{puts()} to output. I chose puts as it was faster and easier to write than printf for this use case. 
+  
+  \item It does not return any value\end{itemize}
+
+\section*{\texttt{getSel}}
+\begin{lstlisting}[language=C]
+int getSel(void){
+    int sel;
+    menuFunc();
+    printf("Enter selection: ");
+    if (scanf("%d", &sel) != 1) return 4;
+    return sel;
+}
+\end{lstlisting}
+
+The \texttt{getSel} calls the menu function (menuFunc), and asks for the user's input
+\begin{itemize}
+  \item Calls \texttt{menuFunc()} to display the menu options are printed before asking for input.
+  \item Variable \texttt{sel}, stores the user’s input.
+  \item Prompts the user with \texttt{"Enter selection:"}.
+  \item \texttt{scanf()} to read an integer into \texttt{sel}. Also includes a check to make sure user input is within bounds.
+    \end{itemize}
+
+\newpage
+
+\section*{\texttt{selFunc}}
+\begin{lstlisting}[language=C]
+void selFunc(int sel, pcb **arr, int *pmax){
+    switch (sel) {
+        case 1: {
+            int newMax = maxProc();
+            freeMem(*arr, *pmax);
+            *arr = initArr(newMax);
+            *pmax = newMax;
+            break;
+        }
+        case 2:
+            if (!*arr) { printf("Pick 1 first.\n"); break; }
+            create(*arr, *pmax);
+            break;
+        case 3:
+            if (!*arr) { printf("Pick 1 first.\n"); break; }
+            destroyDesc(*arr, *pmax);
+            break;
+        case 4:
+            printf("Quitting program...\n");
+            freeMem(*arr, *pmax);
+            *arr = NULL;
+            *pmax = 0;
+            break;
+        default:
+            printf("Invalid selection.\n");
+    }
+}
+\end{lstlisting}
+The \texttt{selFunc} function takes the user’s menu selection and uses a \texttt{switch} 
+statement to run the correct logic:
+
+\begin{itemize}
+  \item \textbf{Case 1:} Calls \texttt{maxProc()} to read a max process count from the user. 
+  It then frees any existing array with \texttt{freeMem}, initializes a new PCB array 
+  with \texttt{initArr}, and updates the max size.
+
+  \item \textbf{Case 2:} Ensures that the PCB array has been initialized. If so, it 
+  calls \texttt{create()} to add a new child process to the hierarchy.
+
+  \item \textbf{Case 3:} Ensures that the PCB array has been initialized. If so, it 
+  calls \texttt{destroyDesc()} to recursively delete all descendants of a given process.
+
+  \item \textbf{Case 4:} Prints "Quitting program...", frees all memory with \texttt{freeMem}, 
+  and resets pointers to \texttt{NULL} before exiting the program loop.
+
+  \item \textbf{Default:} Handles invalid user input by printing an error message.
+\end{itemize}
+
+
+
+\newpage
+
+
+\section*{\texttt{maxProc}}
+\begin{lstlisting}[language=C]
+int maxProc(void){
+    int max;
+    printf("Enter the maximum number of processes: ");
+    if (scanf("%d", &max) != 1 || max < 1) max = 1;
+    return max;
+}
+\end{lstlisting}
+
+The \texttt{maxProc} function asks the user for the max amount of processes.
+\begin{itemize}
+  \item Declares the integer variable \texttt{max}.
+  \item Prompts the user to enter the maximum number of processes.
+  \item Uses \texttt{scanf()} to attempt to read an integer and has a input bounds check
+    
+  \item Returns the max value so that memory for the PCB array 
+  can be allocated.
+\end{itemize}
+
+
+\section*{\texttt{initArr}}
+\begin{lstlisting}[language=C]
+pcb* initArr(int max){
+    pcb *dynaArr = malloc(max * sizeof(pcb));
+    if (!dynaArr) { perror("malloc"); exit(1); }
+    for (int i = 0; i < max; i++) {
+        dynaArr[i].isFree = 0;
+        dynaArr[i].parent = -1;
+        dynaArr[i].children = NULL;
+    }
+    dynaArr[0].isFree = 1;
+    dynaArr[0].parent = -1;
+    return dynaArr;
+}
+\end{lstlisting}
+
+The \texttt{initArr} function sets up the PCB array for all processes.
+\begin{itemize}
+  \item Dynamically allocates memory for an array of \texttt{pcb} structures
+    \item Loops over every index in the array:
+    \begin{itemize}
+      \item Marks each PCB as free by setting \texttt{isFree = 0}.
+      \item Resets the parent index to \texttt{-1} (no parent).
+      \item Initializes the children pointer to \texttt{NULL}.
+    \end{itemize}
+  \item iniitializes \texttt{PCB[0]} as the root process
+
+    
+  \item Returns the pointer to the newly allocated array so it can be used for the program.
+\end{itemize}
+
+
+
+\newpage
+\section*{\texttt{create} }
+\begin{lstlisting}[language=C]
+void create(pcb *arr, int max){
+    if (!arr) { printf("Not initialized.\n"); return; }
+    int parentIndex;
+    printf("Enter the parent process index: ");
+    if (scanf("%d", &parentIndex) != 1) { printf("Bad input.\n"); return; }
+    if (parentIndex < 0 || parentIndex >= max || arr[parentIndex].isFree == 0) {
+        printf("Invalid parent index.\n");
+        return;
+    }
+    int childIndex = -1;
+    for (int i = 1; i < max; i++) {
+        if (arr[i].isFree == 0) { childIndex = i; break; }
+    }
+    if (childIndex == -1) { printf("No free PCB available.\n"); return; }
+    arr[childIndex].isFree = 1;
+    arr[childIndex].parent = parentIndex;
+    arr[childIndex].children = NULL;
+    child *node = malloc(sizeof(child));
+    if (!node) { perror("malloc"); exit(1); }
+    node->childIndex = childIndex;
+    node->next = NULL;
+    if (arr[parentIndex].children == NULL) {
+        arr[parentIndex].children = node;
+    } else {
+        child *cur = arr[parentIndex].children;
+        while (cur->next) cur = cur->next;
+        cur->next = node;
+    }
+    printParentChildren(arr, max);
+}
+\end{lstlisting}
+
+The \texttt{create} function adds a new process to the hierarchy as a child of an existing parent.
+\begin{itemize}
+  \item Checks to make sure the PCB array is initialized  
+  \item Prompts for user input for a parent process index.
+    \item Searches the PCB array for the first available free slot  
+  \item Initializes the new child PCB by marking it active, recording its parent, and setting its children list to \texttt{NULL}.
+  \item Allocates a new \texttt{child} node and sets its index to the new child PCB.
+  \item Appends this node to the parent’s child linked lists
+  \item Calls \texttt{printParentChildren()} to print the hierarchy.
+\end{itemize}
+\newpage
+\section*{\texttt{printParentChildren}}
+\begin{lstlisting}[language=C]
+void printParentChildren(pcb *arr, int max){
+    for (int i = 0; i < max; i++) {
+        if (arr[i].isFree && arr[i].children) {
+            printf("PCB[%d] is the parent of: ", i);
+            child *c = arr[i].children;
+            while (c) { 
+                printf("PCB[%d] ", c->childIndex); 
+                c = c->next; 
+            }
+            printf("\n");
+        }
+    }
+}
+\end{lstlisting}
+
+The \texttt{printParentChildren} function displays the parent--child relations 
+in the PCB hierarchy:
+
+\begin{itemize}
+  \item Loops through every PCB in the dynamic array.
+  \item For each PCB that is active and has at least one child, 
+  it prints a line showing that PCB’s index as a parent.
+  \item Traverses the linked list of children for that parent and prints each child’s index 
+  in the order.
+  
+\end{itemize}
+
+
+\newpage
+
+
+\section*{\texttt{destroyDesc}}
+\begin{lstlisting}[language=C]
+void destroyDesc(pcb *arr, int max){
+    if (!arr) { printf("Not initialized.\n"); return; }
+    int p;
+    printf("Enter the index of the process whose descendants are to be destroyed: ");
+    if (scanf("%d", &p) != 1) { printf("Bad input.\n"); return; }
+    if (p < 0 || p >= max || arr[p].isFree == 0) {
+        printf("Invalid process index.\n");
+        return;
+    }
+    destroySubTree(arr, max, p);
+    printParentChildren(arr, max);
+}
+\end{lstlisting}
+
+The \texttt{destroyDesc} function asks as the user for the index of the process, which will result in the descendants from that index to be destroyed recursively.
+\begin{itemize}
+   \item Prompts the user for a process index \texttt{p}.
+   \item Calls \texttt{destroySubTree} on that index, which performs the recursive destruction of all descendants.
+ 
+\end{itemize}
+
+---
+
+
+\section*{\texttt{destroySubTree}}
+\begin{lstlisting}[language=C]
+void destroySubTree(pcb *arr, int max, int p){
+    child *cur = arr[p].children;
+    while (cur) {
+        int q = cur->childIndex;
+        destroySubTree(arr, max, q);
+        arr[q].isFree = 0;
+        arr[q].parent = -1;
+        arr[q].children = NULL;
+        child *next = cur->next;
+        free(cur);
+        cur = next;
+    }
+    arr[p].children = NULL;
+}
+\end{lstlisting}
+
+The \texttt{destroySubTree} function performs the recursive deletion of descendants:
+
+\begin{itemize}
+  \item Begins with the linked list of children belonging to process \texttt{p}.
+  \item For each child node:
+    \begin{itemize}
+      \item Recursively calls \texttt{destroySubTree} to ensure all of that child’s 
+      descendants are deleted first.
+      \item Marks the child PCB as free by resetting \texttt{isFree}, \texttt{parent}, 
+      and \texttt{children}.
+      \item Frees the current child node from the parent’s linked list.
+    \end{itemize}
+  \item After all children are processed, sets \texttt{arr[p].children = NULL}, 
+  leaving the parent with no descendants.
+\end{itemize}
+
+
+
+\section*{\texttt{freeMem}}
+\begin{lstlisting}[language=C]
+void freeMem(pcb *arr, int max){
+    if (!arr) return;
+    for (int i = 0; i < max; i++) {
+        child *c = arr[i].children;
+        while (c) { child *n = c->next; free(c); c = n; }
+        arr[i].children = NULL;
+    }
+    free(arr);
+}
+\end{lstlisting}
+
+On quitting, this function deallocates all child lists and frees the PCB array.
+
+\end{document}
