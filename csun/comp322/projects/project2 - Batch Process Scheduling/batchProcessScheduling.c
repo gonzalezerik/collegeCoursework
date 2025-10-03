@@ -18,7 +18,10 @@ struct node {
     int turnArnd;
 } *table = NULL;
 
-
+struct Best {
+    int index;
+    int value;
+};
 int clk = 0;
 
 void menuFunc(void);
@@ -33,7 +36,7 @@ void display(int field, char *buf, size_t size);
 void fifo(int);
 void reset(int);
 void initClk(int);
-int scan(int,int);
+void scan(int, int, int);
 int maxInt(int, int);
 void sjf(int num);
 
@@ -166,7 +169,7 @@ void initClk(int num){
         }
     }
     }
-
+in 
 void reset(int num){
     for(int i = 0; i < num; i++){
         table[i].done = 0;
@@ -177,17 +180,37 @@ void reset(int num){
     clk = 0;
 }
 
-int scan(int check, int val){
-    if (val < check){
-        check = val;
-    }
-       return check;
-   }
+void scan(int i, int num, int flag){
+    struct Best best = {.index = -1, .value = INT_MAX};
+    do {
+        if(table[i].done!= 1){
+            int value;
+            switch(flag){
+                case 1:
+                    break;
+                case 2:
+                    value = table[i].arvl;
+
+                    break;
+                case 3:
+                    
+                    break;
+                case 4:
+                    break;
+                }
+            }
+    }while(i < num);
+}
 
 void fifo(int num){
     reset(num);
-    
+    for(int i = 0; i < num; i++){
+        scan(i, num);
 
+    }
+
+
+    /*
     for(int i = 0; i < num; i++){ //goes through all three procsses, 
         while(table[i].done == 0){ 
             for (int j = 1; j < num; j++){ //for loop for checking, j = table[j].arvl assuming earliest    
@@ -199,7 +222,7 @@ void fifo(int num){
             clk = table[i].end;
             table[i].done = 1;
         }
-    }
+    }*/
     printTable(num);
 }
 
@@ -216,7 +239,7 @@ int maxInt(int arvl, int currClk){
 
 void sjf(int num){
     reset(num); //reset .done field
-    
+    /*
     for (int i = 0; i < num; i++){
         while(table[i].done == 0);{
             for(int j = 1; j < num; j++){
@@ -227,7 +250,7 @@ void sjf(int num){
 
         }
 
-    }
+    } */
 
     
 }
