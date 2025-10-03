@@ -136,8 +136,8 @@ void enterFun(int num){
 }
 
 void printTable(int num){
-    puts("ID       Arrival  Total    Start    End      Turnaround");
-    puts("-------------------------------------------------------");
+    printf("%-7s %-7s %-7s %-7s %-7s %-10s\n","ID", "Arrival", "Total", "Start", "End", "Turnaround");
+    puts("--------------------------------------------------");
     for(int i = 0; i < num; i++){
         char bufStart[20], bufEnd[20], bufTurn[20];
 
@@ -145,9 +145,10 @@ void printTable(int num){
         display(table[i].end, bufEnd, sizeof(bufEnd));
         display(table[i].turnArnd, bufTurn, sizeof(bufTurn));
 
-        printf("%d       %d         %d        %s        %s        %s\n", table[i].id, table[i].arvl, table[i].totalCycles, bufStart, bufEnd, bufTurn);
+        printf("%-7d %-7d %-7d %-7s %-7s %-10s\n", table[i].id, table[i].arvl, table[i].totalCycles, bufStart, bufEnd, bufTurn);
         
     }
+    newLine();
 }
 
 // modified display: it fills a buffer you give it
