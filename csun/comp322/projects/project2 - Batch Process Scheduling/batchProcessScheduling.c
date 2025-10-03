@@ -13,7 +13,7 @@ void newLine(void);
 void enterFun(int);
 void printTable(int);
 const char *display(int);
-void fifo(void);
+void fifo(int);
 
 struct node {
 
@@ -155,7 +155,14 @@ int initClk(int num){
     return clk;
 }
 
-void fifo(void){
+void reset(int num){
+    for(i = 0; i < num; i++){
+        table[i].done = 0;
+    }
+}
+
+void fifo(int num){
+    reset(num);
 
 
 }
@@ -167,6 +174,8 @@ void sjf(void){
 void srt(void){
 
 }
+
+
 
 int main(){
     do { 
