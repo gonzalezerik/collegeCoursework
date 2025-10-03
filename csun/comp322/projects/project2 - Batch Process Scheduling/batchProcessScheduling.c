@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <strings.h>
 
 struct node {
 
@@ -20,11 +21,9 @@ struct node {
 struct early {
     int value;
     int index;
-} *earliest;
+};
+int clk = 0;
 
-
-int i = 0;
-int clk;
 void menuFunc(void);
 bool selFunc(int);
 int getSel(void);
@@ -33,11 +32,12 @@ int paramCheck(void);
 void newLine(void);
 void enterFun(int);
 void printTable(int);
-const char *display(int);
+void display(int field, char *buf, size_t size);
 void fifo(int);
 void reset(int);
 void initClk(int);
-struct early scan(int,int);
+struct early scan(int,int,int,int);
+int maxInt(int, int);
 
 void newLine(void){
     puts("");
@@ -50,7 +50,7 @@ void menuFunc(){
     puts("Batch scheduling");
     puts("----------------");
     puts("1) Enter parameters");
-   for(i = 0; i < size; i++){
+   for(int i = 0; i < size; i++){
        printf("%x) %s with %s algorithm\n",i+2,schProc,arr[i]);
     }
     puts("5) Quit and free memory\n");
@@ -70,9 +70,7 @@ bool selFunc(int vrfdSel){
             break;
         case 2:
             paramCheck();
-            fifo(num);
-            puts("case2");
-            
+            fifo(num);            
             return true;
             break;
         case 3:
@@ -117,8 +115,8 @@ int paramCheck(void){
 
 void enterFun(int num){
     table = malloc(num * sizeof(struct node));
-    earliest = malloc(num * sizeof(struct early));
-    for(i = 0;i < num; i++){
+    
+    for(int i = 0;i < num; i++){
         printf("Enter process id: ");
         scanf("%d", &table[i].id);
         
@@ -132,7 +130,7 @@ void enterFun(int num){
         table[i].end = -1;
         table[i].turnArnd = -1;
     }
-    initClk(num);
+    
     printTable(num);
   
 }
@@ -140,25 +138,32 @@ void enterFun(int num){
 void printTable(int num){
     puts("ID       Arrival  Total    Start    End      Turnaround");
     puts("-------------------------------------------------------");
-    for(i = 0; i < num; i++){
-        printf("%d       %d         %d        %s        %s        %s\n", table[i].id, table[i].arvl, table[i].totalCycles, display(table[i].start), display(table[i].end), display(table[i].turnArnd));
-    }
-    newLine(); 
-}
-const char *display(int field){
-    static char buffer[20];
-    if(field == -1){
-        return " ";
-    } else { 
-        snprintf(buffer, sizeof(buffer), "%d", field);
-        return buffer;
-    }
- 
+    for(int i = 0; i < num; i++){
+        char bufStart[20], bufEnd[20], bufTurn[20];
 
+        display(table[i].start, bufStart, sizeof(bufStart));
+        display(table[i].end, bufEnd, sizeof(bufEnd));
+        display(table[i].turnArnd, bufTurn, sizeof(bufTurn));
+
+        printf("%d       %d         %d        %s        %s        %s\n", table[i].id, table[i].arvl, table[i].totalCycles, bufStart, bufEnd, bufTurn);
+        
+    }
 }
+
+// modified display: it fills a buffer you give it
+void display(int field, char *buf, size_t size) {
+    if (field == -1) {
+        snprintf(buf, size, " ");       // blank if unset
+    } else {
+        snprintf(buf, size, "%d", field);
+    }
+}
+
+
+
 void initClk(int num){
     clk = table[0].arvl;
-    for (i = 1; i < num; i++){
+    for (int i = 1; i < num; i++){
         if(table[i].arvl < clk){
             clk = table[i].arvl;
         }
@@ -166,29 +171,47 @@ void initClk(int num){
     }
 
 void reset(int num){
-    for(i = 0; i < num; i++){
+    for(int i = 0; i < num; i++){
         table[i].done = 0;
     }
 }
 
-struct early scan(int j, int val){
-    
-    
-           
-}
+struct early scan(int check, int checkID, int val, int valID){
+    struct early earliest = { .value = check, .index = checkID};
+    if (val < check){
+        earliest.value = val;
+        earliest.index = valID;
+    }
+    return earliest;
+   }
 
 void fifo(int num){
     reset(num);
     struct early *arr = (malloc(num * sizeof(struct early)));
 
-    for(i = 0; i <= num; i++){
+    for(int i = 0; i < num; i++){ //goes through all three procsses, 
         while(table[i].done == 0){ 
-            for(int j = 1; j < num; j++){
-                arr[i] = scan(num, table[j-1].arvl);
-            }
+            for (int j = 1; j < num; j++){ //for loop for checking, j = table[j].arvl assuming earliest    
+                    arr[i] = scan(table[0+i].arvl,table[0+i].id, table[j].arvl, table[j].id);
         }
-
+            table[i].start = maxInt(arr[i].value, clk);
+            table[i].end = (table[i].start + table[i].totalCycles);
+            table[i].turnArnd = (table[i].end - table[i].arvl);
+            clk = table[i].end;
+            table[i].done = 1;
+        }
     }
+    printTable(num);
+}
+
+int maxInt(int arvl, int currClk){
+    if (currClk < arvl){
+        return arvl;
+    }
+    else if (currClk >= arvl){
+        return currClk;
+    }
+    return currClk;
 }
 
 void sjf(void){
