@@ -22,6 +22,7 @@ struct Best {
     int index;
     int value;
 };
+
 int clk = 0;
 static int num;
 
@@ -37,7 +38,7 @@ void display(int field, char *buf, size_t size);
 void fifo(struct Best comp);
 void reset(void);
 void initClk(int);
-void scan(int flag);
+struct Best scan(int flag);
 int maxInt(int, int);
 void sjf(struct Best comp);
 void srt(struct Best comp);
@@ -69,16 +70,25 @@ bool selFunc(int vrfdSel){
             enterFun();
             return true;
             break;
-        case 2:
+        case 2: 
             paramCheck();
-            scan(2);
             reset();
+            for(int i = 0; i < num; i++){
+                struct Best best = scan(2);
+                fifo(best);
+            }
+            printTable();
             return true;
             break;
         case 3:
             puts("-------selFunc sjf scan-------");
             paramCheck();
-            scan(3);  
+            reset();
+            for (int i = 0; i < num; i++){
+                struct Best best = scan(3); 
+                sjf(best);
+            }
+            printTable();
             return true;
             break;
         case 4:
@@ -174,30 +184,28 @@ void reset(){
         table[i].turnArnd = -1;
     }
     clk = 0;
-}
+    }
 
-void scan(int flag){
+struct Best scan(int flag){
     int i = 0;
     struct Best best = {.index = -1, .value = INT_MAX};
-
     do {
         if(table[i].done!= 1){
             switch(flag){
                 case 2:
-                    fifo(compare(best, flag, i));
+                    best = compare(best, flag, i);
                     break;
                 case 3: 
-                    sjf(compare(best, flag, i));
+                    best = compare(best, flag, i);
                     break;
                 case 4:
-                    srt(compare(best, flag, i));
+                    best = compare(best, flag, i);
                     break;
                 } 
         }
         i++;
-    }while(i < num);
-    printTable();
-    
+    }while(i < num); 
+    return best;
 }
 
 struct Best compare(struct Best best, int flag, int i){
