@@ -3,16 +3,14 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdbool.h>
-int sel;
-
-bool init = false;
-
+int i;
 void menuFunc(void);
-void selFunc(int sel);
+bool selFunc(int);
 int getSel(void);
 int verifySel(void);
 int paramCheck(void);
 void newLine(void);
+void enterFun(int);
 struct node {
 
     int id;
@@ -25,6 +23,8 @@ struct node {
     int end;
     int turnArnd;
 } *table = NULL;
+
+
 void newLine(void){
     puts("");
 }
@@ -34,31 +34,43 @@ void menuFunc(){
     int size = sizeof(arr) / sizeof(arr[0]);
     puts("Batch scheduling");
     puts("----------------");
-   for(int i = 0; i < size; i++){
+   for(i = 0; i < size; i++){
        printf("%x) %s with %s algorithm\n",i+1,schProc,arr[i]);
     }
     puts("5) Quit and free memory\n");
 }
-void selFunc(int sel){
-    switch(sel){
+bool selFunc(int vrfdSel){
+    static int num;
+    static bool init;
+    switch(vrfdSel){
         case 1:
-            puts("case1");
             init = true;
+            printf("Enter total number of processes: ");
+            scanf("%d", &num);
+            enterFun(num);
+            
+
+            return true;
             break;
         case 2:
             paramCheck();
             puts("case2");
+            
+            return true;
             break;
         case 3:
             paramCheck();
             puts("case3");
+            return true;
             break;
         case 4:
             paramCheck();
             puts("case4");
+            return true;
             break;
         case 5: 
             puts("Quitting program . . . ");
+            return false;
             break;
         default:
             puts("Invalid selection");
@@ -68,31 +80,58 @@ void selFunc(int sel){
 
 int getSel(void){
     while(1){
-        menuFunc();
         printf("Enter selection: ");
         return(verifySel());
     }
 }
 int verifySel(void){
+    int sel;
     if(scanf("%d", &sel) == 1 && sel >= 1 && sel <= 5){
        return sel;
     }
 }
 
 int paramCheck(void){
-    if (!init){
+    if (!table){
         puts("Pick 1 to enter parameters first");
         newLine();
     }
 }
 
+void enterFun(int num){
+    table = malloc(num * sizeof(struct node));
+
+    for(i = 0; i < num; i++){
+        printf("Enter process id: ");
+        scanf("%d", &table[i].id);
+        
+        printf("Enter arrival cycle for process P[%d]: ", table[i].id);
+        scanf("%d", &table[i].arvl);
+        
+        printf("Enter total cycles for process P[%d]: ", table[i].id);
+        scanf("%d", &table[i].totalCycles);
+        
+    }
+  
+}
+
+void fifo(void){
+
+}
+
+void sjf(void){
+
+}
+
+void srt(void){
+
+}
 
 int main(){
     do { 
-        selFunc(getSel());
-    } while (sel != 5);
-
-        return 0;
+        menuFunc();
+    } while (selFunc(getSel()));
+    return 0;
 }
 
 
