@@ -18,10 +18,7 @@ struct node {
     int turnArnd;
 } *table = NULL;
 
-struct early {
-    int value;
-    int index;
-};
+
 int clk = 0;
 
 void menuFunc(void);
@@ -36,8 +33,9 @@ void display(int field, char *buf, size_t size);
 void fifo(int);
 void reset(int);
 void initClk(int);
-struct early scan(int,int,int,int);
+int scan(int,int);
 int maxInt(int, int);
+void sjf(int num);
 
 void newLine(void){
     puts("");
@@ -126,9 +124,7 @@ void enterFun(int num){
         printf("Enter total cycles for process P[%d]: ", table[i].id);
         scanf("%d", &table[i].totalCycles);
         
-        table[i].start = -1;
-        table[i].end = -1;
-        table[i].turnArnd = -1;
+        
     }
     
     printTable(num);
@@ -146,7 +142,7 @@ void printTable(int num){
         display(table[i].turnArnd, bufTurn, sizeof(bufTurn));
 
         printf("%-7d %-7d %-7d %-7s %-7s %-10s\n", table[i].id, table[i].arvl, table[i].totalCycles, bufStart, bufEnd, bufTurn);
-        
+        reset(num);
     }
     newLine();
 }
@@ -174,28 +170,30 @@ void initClk(int num){
 void reset(int num){
     for(int i = 0; i < num; i++){
         table[i].done = 0;
+        table[i].start = -1;
+        table[i].end = -1;
+        table[i].turnArnd = -1;
     }
+    clk = 0;
 }
 
-struct early scan(int check, int checkID, int val, int valID){
-    struct early earliest = { .value = check, .index = checkID};
+int scan(int check, int val){
     if (val < check){
-        earliest.value = val;
-        earliest.index = valID;
+        check = val;
     }
-    return earliest;
+       return check;
    }
 
 void fifo(int num){
     reset(num);
-    struct early *arr = (malloc(num * sizeof(struct early)));
+    
 
     for(int i = 0; i < num; i++){ //goes through all three procsses, 
         while(table[i].done == 0){ 
             for (int j = 1; j < num; j++){ //for loop for checking, j = table[j].arvl assuming earliest    
-                    arr[i] = scan(table[0+i].arvl,table[0+i].id, table[j].arvl, table[j].id);
+                    table[i].start = scan(table[0+i].arvl, table[j].arvl);
         }
-            table[i].start = maxInt(arr[i].value, clk);
+            table[i].start = maxInt(table[i].start, clk);
             table[i].end = (table[i].start + table[i].totalCycles);
             table[i].turnArnd = (table[i].end - table[i].arvl);
             clk = table[i].end;
@@ -206,6 +204,7 @@ void fifo(int num){
 }
 
 int maxInt(int arvl, int currClk){
+    
     if (currClk < arvl){
         return arvl;
     }
@@ -215,12 +214,26 @@ int maxInt(int arvl, int currClk){
     return currClk;
 }
 
-void sjf(void){
+void sjf(int num){
+    reset(num); //reset .done field
+    
+    for (int i = 0; i < num; i++){
+        while(table[i].done == 0);{
+            for(int j = 1; j < num; j++){
+                table[i].start = scan(table[0+i].totalCycles, table[j].totalCycles);
+            }
+            
 
+
+        }
+
+    }
+
+    
 }
 
 void srt(void){
-
+    
 }
 
 
