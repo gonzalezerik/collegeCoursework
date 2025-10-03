@@ -11,6 +11,8 @@ int verifySel(void);
 int paramCheck(void);
 void newLine(void);
 void enterFun(int);
+void printTable(int);
+const char *display(int);
 struct node {
 
     int id;
@@ -32,10 +34,12 @@ void menuFunc(){
     const char *schProc = "Schedule processes:";
     char *arr[] = {"FIFO", "SJF", "SRT"};
     int size = sizeof(arr) / sizeof(arr[0]);
+
     puts("Batch scheduling");
     puts("----------------");
+    puts("1) Enter parameters");
    for(i = 0; i < size; i++){
-       printf("%x) %s with %s algorithm\n",i+1,schProc,arr[i]);
+       printf("%x) %s with %s algorithm\n",i+2,schProc,arr[i]);
     }
     puts("5) Quit and free memory\n");
 }
@@ -111,10 +115,33 @@ void enterFun(int num){
         printf("Enter total cycles for process P[%d]: ", table[i].id);
         scanf("%d", &table[i].totalCycles);
         
+        table[i].start = -1;
+        table[i].end = -1;
+        table[i].turnArnd = -1;
     }
+    printTable(num);
   
 }
 
+void printTable(int num){
+    puts("ID       Arrival  Total    Start    End      Turnaround");
+    puts("-------------------------------------------------------");
+    for(i = 0; i < num; i++){
+        printf("%d       %d         %d        %s        %s        %s\n", table[i].id, table[i].arvl, table[i].totalCycles, display(table[i].start), display(table[i].end), display(table[i].turnArnd));
+    }
+    newLine(); 
+}
+const char *display(int field){
+    static char buffer[20];
+    if(field == -1){
+        return " ";
+    } else { 
+        snprintf(buffer, sizeof(buffer), "%d", field);
+        return buffer;
+    }
+ 
+
+}
 void fifo(void){
 
 }
