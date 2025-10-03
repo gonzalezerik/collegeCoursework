@@ -23,6 +23,7 @@ struct Best {
     int value;
 };
 int clk = 0;
+static int num;
 
 void menuFunc(void);
 bool selFunc(int);
@@ -30,21 +31,22 @@ int getSel(void);
 int verifySel(void);
 int paramCheck(void);
 void newLine(void);
-void enterFun(int);
-void printTable(int);
+void enterFun(void);
+void printTable(void);
 void display(int field, char *buf, size_t size);
-void fifo(struct Best comp, int num);
-void reset(int);
+void fifo(struct Best comp);
+void reset(void);
 void initClk(int);
-void scan(int num, int flag);
+void scan(int flag);
 int maxInt(int, int);
-void sjf(int num);
+void sjf(struct Best comp);
+void srt(struct Best comp);
 struct Best compare(struct Best best, int flag, int i);
 
 void newLine(void){
     puts("");
 }
-void menuFunc(){
+void menuFunc(void){
     const char *schProc = "Schedule processes:";
     char *arr[] = {"FIFO", "SJF", "SRT"};
     int size = sizeof(arr) / sizeof(arr[0]);
@@ -58,32 +60,31 @@ void menuFunc(){
     puts("5) Quit and free memory\n");
 }
 bool selFunc(int vrfdSel){
-    static int num;
     static bool init;
     switch(vrfdSel){
         case 1:
             init = true;
             printf("Enter total number of processes: ");
             scanf("%d", &num);
-            enterFun(num);
-            
-
+            enterFun();
             return true;
             break;
         case 2:
             paramCheck();
-            scan(num, 2);
-            reset(num);
+            scan(2);
+            reset();
             return true;
             break;
         case 3:
+            puts("-------selFunc sjf scan-------");
             paramCheck();
-            puts("case3");
+            scan(3);  
             return true;
             break;
         case 4:
             paramCheck();
-            puts("case4");
+            scan(4);
+            reset();
             return true;
             break;
         case 5: 
@@ -116,7 +117,7 @@ int paramCheck(void){
     }
 }
 
-void enterFun(int num){
+void enterFun(void){
     table = malloc(num * sizeof(struct node));
     
     for(int i = 0;i < num; i++){
@@ -131,12 +132,12 @@ void enterFun(int num){
         
         
     }
-    reset(num); 
-    printTable(num);
+    reset(); 
+    printTable();
   
 }
 
-void printTable(int num){
+void printTable(void){
     printf("%-7s %-7s %-7s %-7s %-7s %-10s\n","ID", "Arrival", "Total", "Start", "End", "Turnaround");
     puts("--------------------------------------------------");
     for(int i = 0; i < num; i++){
@@ -165,7 +166,7 @@ void display(int field, char *buf, size_t size) {
 
 
  
-void reset(int num){
+void reset(){
     for(int i = 0; i < num; i++){
         table[i].done = 0;
         table[i].start = -1;
@@ -175,46 +176,38 @@ void reset(int num){
     clk = 0;
 }
 
-void scan(int num, int flag){
-    printf("\n----SCAN FUNCTION-----\n");
-    newLine();
+void scan(int flag){
     int i = 0;
     struct Best best = {.index = -1, .value = INT_MAX};
-    puts("init best");
-    printf("best.value: %d \n best.index: %d\n", best.value, best.index);
-    newLine();
+
     do {
         if(table[i].done!= 1){
             switch(flag){
                 case 2:
-                    newLine();
-                    puts("case2:\n");
-                    printf("best = compare((best.value[%d], best.index[%d]) , flag: %d , i: %d\n", best.value, best.index, flag, i);
-                    fifo(compare(best, flag, i), num);
+                    fifo(compare(best, flag, i));
                     break;
-                case 3:
+                case 3: 
+                    sjf(compare(best, flag, i));
                     break;
                 case 4:
+                    srt(compare(best, flag, i));
                     break;
-            } 
-            i++;
-        } 
-        
+                } 
+        }
+        i++;
     }while(i < num);
-    printTable(num);        
+    printTable();
+    
 }
 
 struct Best compare(struct Best best, int flag, int i){
-    puts("-----Entering compare-------");
-    newLine();
     int value;
     switch(flag){
         case 2:
             value = table[i].arvl;
-
             break;
         case 3:
-            if (table[i].arvl < clk){
+            if (table[i].arvl <= clk){
                 value = table[i].totalCycles;
             }   
             break;
@@ -233,11 +226,9 @@ struct Best compare(struct Best best, int flag, int i){
             best.value = value;
         }
     }
-    puts("returning best after compare");
-    printf("best.value: %d\n best.index: %d\n", best.value, best.index);
     return best;
 }
-void fifo(struct Best comp,int num){ 
+void fifo(struct Best comp){ 
         table[comp.index].start = maxInt(table[comp.index].arvl,clk);
         table[comp.index].end = table[comp.index].start + table[comp.index].totalCycles;
         table[comp.index].turnArnd = table[comp.index].end - table[comp.index].arvl;
@@ -272,8 +263,14 @@ int maxInt(int arvl, int currClk){
     return currClk;
 }
 
-void sjf(int num){
-    reset(num); //reset .done field
+void sjf(struct Best comp){
+    table[comp.index].start = clk;
+    table[comp.index].end = table[comp.index].start + table[comp.index].totalCycles;
+    table[comp.index].turnArnd = table[comp.index].end - table[comp.index].arvl;
+    clk = table[comp.index].end; 
+    table[comp.index].done = 1;
+
+    //reset .done field
     /*
     for (int i = 0; i < num; i++){
         while(table[i].done == 0);{
@@ -290,7 +287,7 @@ void sjf(int num){
     
 }
 
-void srt(void){
+void srt(struct Best comp){
     
 }
 
