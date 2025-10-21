@@ -1,0 +1,1052 @@
+\documentclass[8pt]{extarticle}
+
+% --- Core math packages
+\usepackage{amsmath, amssymb}
+
+% --- Page + spacing tweaks to fit exactly two pages
+\usepackage[margin=0.45in]{geometry}
+\usepackage{microtype}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\linespread{0.98}
+
+% --- Compact display math spacing
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{6pt}%
+  \setlength\belowdisplayskip{6pt}%
+  \setlength\abovedisplayshortskip{4pt}%
+  \setlength\belowdisplayshortskip{4pt}%
+}
+\makeatother
+
+% --- Lists tighter (keeps your content intact)
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+
+% --- Boxing + columns
+\usepackage[most]{tcolorbox}
+\usepackage{multicol}
+\setlength{\columnsep}{0.35em}
+
+\tcbset{
+  colback=white,
+  colframe=black!70,
+  boxrule=0.5pt,
+  arc=1.5pt,
+  left=4pt,right=4pt,top=3pt,bottom=3pt,
+  before skip=4pt, after skip=4pt,
+  enhanced,
+  breakable, % allow long boxes to cross a page if needed
+  title style={font=\bfseries}
+}
+
+\begin{document}
+\small
+
+\begin{center}
+  \Large\textbf{Math 262 -- Solutions to Practice Problems}\\[-2pt]
+  \normalsize (Every original question and solution; each problem in its own box; condensed to two pages)
+\end{center}
+
+\begin{multicols}{2}
+\raggedcolumns
+
+% =========================================================
+% Problem 1
+% =========================================================
+\begin{tcolorbox}[title=Problem 1 — Original Statement and Solution]
+\noindent
+\textbf{1.} Let \( T:\mathbb{R}^3 \to \mathbb{R}^2 \) be given by
+\[
+T\!\left(
+\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}
+\right)
+=
+\begin{bmatrix}
+x_{1}+x_{2}\\
+x_{2}+x_{3}
+\end{bmatrix}.
+\]
+
+\begin{enumerate}
+\item[(a)] Show that \(T\) is a linear transformation.
+\item[(b)] Find the matrix of \(T\).
+\end{enumerate}
+\begin{enumerate}
+\item
+\[
+a^{(*)} \; T\!\left(\begin{bmatrix} x_{1}\\ x_{2}\\ x_{3} \end{bmatrix} +
+\begin{bmatrix} y_{1}\\ y_{2}\\ y_{3} \end{bmatrix}\right)
+= T\!\left(\begin{bmatrix} x_{1}+y_{1}\\ x_{2}+y_{2}\\ x_{3}+y_{3} \end{bmatrix}\right)
+\]
+
+\[
+= \begin{bmatrix} x_{1}+y_{2}\\ x_{2}+y_{3} \end{bmatrix}
+- \begin{bmatrix} (x_{1}+y_{1})+(x_{2}+y_{2})\\ (x_{2}+y_{2})+(x_{3}+y_{3}) \end{bmatrix}
+\]
+
+\[
+= \begin{bmatrix} x_{1}+y_{2}\\ x_{2}+y_{3} \end{bmatrix}
+- \begin{bmatrix} x_{1}+x_{2}+y_{1}+y_{2}\\ x_{2}+x_{3}+y_{2}+y_{3} \end{bmatrix}
+\]
+
+\[
+= T\!\left(\begin{bmatrix} x_{1}\\ x_{2}\\ x_{3} \end{bmatrix}\right)
++ T\!\left(\begin{bmatrix} y_{1}\\ y_{2}\\ y_{3} \end{bmatrix}\right)
+\]
+
+\medskip
+(i) For $r \in \mathbb{R}$
+
+\[
+T\!\left(r\begin{bmatrix} x_{1}\\ x_{2}\\ x_{3} \end{bmatrix}\right)
+= \begin{bmatrix} r x_{1}+r x_{2}\\ r x_{2}+r x_{3} \end{bmatrix}
+- r \begin{bmatrix} x_{1}+x_{2}\\ x_{2}+x_{3} \end{bmatrix}
+= r \, T\!\left(\begin{bmatrix} x_{1}\\ x_{2}\\ x_{3} \end{bmatrix}\right)
+\]
+
+So $T$ is linear.
+
+\bigskip
+(ii) To find the matrix of $T$ (call it $A$):
+
+\[
+T(e_{1}) = T\!\left(\begin{bmatrix}1\\0\\0\end{bmatrix}\right)
+= \begin{bmatrix}1\\0\end{bmatrix}
+\]
+
+\[
+T(e_{2}) = T\!\left(\begin{bmatrix}0\\1\\0\end{bmatrix}\right)
+= \begin{bmatrix}0+1\\1+0\end{bmatrix}
+= \begin{bmatrix}1\\1\end{bmatrix}
+\]
+
+\[
+T(e_{3}) = T\!\left(\begin{bmatrix}0\\0\\1\end{bmatrix}\right)
+= \begin{bmatrix}0+0\\0+1\end{bmatrix}
+= \begin{bmatrix}0\\1\end{bmatrix}
+\]
+
+\[
+A = \begin{bmatrix}
+1 & 1 & 0\\
+0 & 1 & 1
+\end{bmatrix}
+\]
+\noindent
+\textbf{2.} Given a linear system \(A\vec{x}=\vec{b}\), suppose the reduced row echelon form (rref) of the augmented matrix is
+\[
+\left[
+\begin{array}{cccc|c}
+1 & 0 & 0 & 1 & 0\\
+0 & 1 & 0 & 2 & 1\\
+0 & 0 & 1 & 3 & 2\\
+0 & 0 & 0 & 0 & 0
+\end{array}
+\right].
+\]
+Give the general solution to the system.
+\item
+\[
+\begin{cases}
+x_{1} + x_{4} = 0\\
+x_{2} + 2x_{4} = 1\\
+x_{3} + 3x_{4} = 2
+\end{cases}
+\quad \Rightarrow \quad
+\begin{aligned}
+x_{1} &= -x_{4}\\
+x_{2} &= 2x_{4}+1\\
+x_{3} &= -3x_{4}+2
+\end{aligned}
+\quad \text{letting } x_{4} = r
+\]
+
+\[
+\text{The general solution: } 
+\begin{bmatrix}
+x_{1}\\
+x_{2}\\
+x_{3}\\
+x_{4}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-r\\
+2r+1\\
+-3r+2\\
+r
+\end{bmatrix}
+\]
+\end{enumerate}
+\end{tcolorbox}
+
+% =========================================================
+% Problem 3
+% =========================================================
+\begin{tcolorbox}[title=Problem 3 — Original Statement and Solution]
+\noindent
+\textbf{Problem 3 (Original Statement):}  
+
+Given the linear system
+\[
+\begin{cases}
+x_{1} - x_{3} = 1,\\[4pt]
+2x_{1} - 2x_{2} = 1,\\[4pt]
+3x_{1} - 4x_{2} + x_{3} = a,
+\end{cases}
+\]
+find (if possible) the values of \(a\) for which the system has  
+\begin{enumerate}
+\item[(a)] no solution,  
+\item[(b)] exactly one solution,  
+\item[(c)] infinitely many solutions.  
+\end{enumerate}
+Also, in the case when there are infinitely many solutions, give the general solution.
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+\begin{bmatrix}
+1 & 0 & -1 & | & 1\\
+-2 & 2 & 0 & | & 1\\
+3 & -4 & 1 & | & a
+\end{bmatrix}
+\;\to\;
+\begin{bmatrix}
+1 & 0 & -1 & | & 1\\
+0 & -2 & 2 & | & -1\\
+0 & -4 & 4 & | & a-3
+\end{bmatrix}
+\;\to\;
+\begin{bmatrix}
+1 & 0 & -1 & | & 1\\
+0 & 1 & -1 & | & \tfrac{1}{2}\\
+0 & 0 & 0 & | & a-1
+\end{bmatrix}
+\]
+
+\[
+\text{(a) No solution if } a \ne 1
+\]
+
+\[
+\text{(b) There is never exactly one solution.}
+\]
+
+\[
+\text{(c) Infinitely many solutions when } a = 1
+\]
+
+In that case,
+\[
+x_{1} = 1 + r, \quad
+x_{2} = \tfrac{1}{2} + r, \quad
+x_{3} = r \quad (\text{letting } x_{3} = r).
+\]
+
+\[
+\begin{bmatrix}
+x_{1}\\
+x_{2}\\
+x_{3}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 + r\\
+\tfrac{1}{2} + r\\
+r
+\end{bmatrix}
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 4
+% =========================================================
+\begin{tcolorbox}[title=Problem 4 — Original Statement and Solution]
+\noindent
+In \(\mathbb{R}^{2}\), let
+\[
+\vec{u} =
+\begin{bmatrix}
+\dfrac{1}{\sqrt{10}}\\[6pt]
+\dfrac{3}{\sqrt{10}}
+\end{bmatrix}.
+\]
+\begin{enumerate}
+\item[(a)] Show that \(\vec{u}\) is a unit vector.  
+\item[(b)] Let \(L\) be the line spanned by \(\vec{u}\), and let
+\[
+\vec{x} =
+\begin{bmatrix}
+-1\\
+4
+\end{bmatrix}.
+\]
+Find the reflection of \(\vec{x}\) through \(L\), that is,
+\[
+\mathrm{ref}_{L}(\vec{x}).
+\]
+\end{enumerate}
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+|\vec{u}| = \sqrt{\left(\frac{1}{\sqrt{10}}\right)^{2} + \left(\frac{3}{\sqrt{10}}\right)^{2}}
+= \sqrt{\frac{1}{10} + \frac{9}{10}}
+= \sqrt{1} = 1
+\]
+
+\[
+\mathrm{proj}_{L}(\vec{x})
+= \frac{\vec{x} \cdot \vec{u}}{\vec{u} \cdot \vec{u}} \, \vec{u}
+\]
+
+\[
+\vec{x} \cdot \vec{u}
+= \begin{bmatrix}-1\\4\end{bmatrix} \cdot
+\begin{bmatrix}\tfrac{1}{\sqrt{10}}\\[4pt]\tfrac{3}{\sqrt{10}}\end{bmatrix}
+= -\tfrac{1}{\sqrt{10}} + \tfrac{12}{\sqrt{10}}
+= \tfrac{11}{\sqrt{10}}
+\]
+
+\[
+\vec{u} \cdot \vec{u} = 1 \quad (\text{since } \vec{u} \text{ is a unit vector})
+\]
+
+\[
+\mathrm{proj}_{L}(\vec{x})
+= \tfrac{11}{\sqrt{10}}
+\begin{bmatrix}
+\tfrac{1}{\sqrt{10}}\\[4pt]
+\tfrac{3}{\sqrt{10}}
+\end{bmatrix}
+= \begin{bmatrix}\tfrac{11}{10}\\[4pt]\tfrac{33}{10}\end{bmatrix}
+\]
+
+\[
+\mathrm{ref}_{L}(\vec{x}) = 2\,\mathrm{proj}_{L}(\vec{x}) - \vec{x}
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 5
+% =========================================================
+\begin{tcolorbox}[title=Problem 5 — Original Statement and Solution]
+\noindent
+\textbf{Original Problem:}  
+In \(\mathbb{R}^{3}\), let \(L\) be the line spanned by the vector
+\[
+\vec{w} =
+\begin{bmatrix}
+\dfrac{1}{\sqrt{2}}\\[6pt]
+0\\[6pt]
+\dfrac{1}{\sqrt{2}}
+\end{bmatrix},
+\qquad
+\vec{x} =
+\begin{bmatrix}
+1\\
+1\\
+1
+\end{bmatrix}.
+\]
+Verify that
+\[
+\vec{x} - \mathrm{proj}_{L}(\vec{x})
+\]
+is orthogonal to \(\vec{w}\), that is, their dot product is zero.
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+2\begin{bmatrix}
+\frac{11}{10}\\[4pt]
+\frac{33}{10}
+\end{bmatrix}
+-
+\begin{bmatrix}
+-1\\[4pt]
+4
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{22}{10}\\[4pt]
+\frac{66}{10}
+\end{bmatrix}
+-
+\begin{bmatrix}
+-1\\[4pt]
+4
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{22}{10}+1\\[4pt]
+\frac{66}{10}-4
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{16}{5}\\[4pt]
+\frac{13}{5}
+\end{bmatrix}
+\]
+
+\medskip
+\noindent
+\textit{Note: You could also use the matrix formula for this one.}
+
+\bigskip
+\[
+\mathrm{proj}_{L}(\vec{x})
+= \frac{\vec{x}\cdot \vec{w}}{\vec{w}\cdot \vec{w}}\,\vec{w}
+= \frac{2}{\sqrt{2}}
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\\[4pt]
+\frac{1}{\sqrt{2}}
+\end{bmatrix}
+= \begin{bmatrix}1\\1\end{bmatrix}.
+\]
+
+\[
+\vec{x} - \mathrm{proj}_{L}(\vec{x})
+= \begin{bmatrix}1\\1\\1\end{bmatrix}
+- \begin{bmatrix}0\\1\\0\end{bmatrix}
+= \begin{bmatrix}1\\0\\1\end{bmatrix}.
+\]
+
+\[
+\text{Finally, }
+\begin{bmatrix}1\\0\\1\end{bmatrix}
+\cdot
+\begin{bmatrix}\tfrac{1}{\sqrt{2}}\\[4pt]0\\[4pt]\tfrac{1}{\sqrt{2}}\end{bmatrix}
+= 0,
+\quad\text{so } \vec{x} - \mathrm{proj}_{L}(\vec{x}) \text{ is orthogonal to } \vec{w} \text{ as claimed.}
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 6
+% =========================================================
+\begin{tcolorbox}[title=Problem 6 — Original Statement and Solution]
+\noindent
+\textbf{Problem 6 (Original Statement):}  
+
+Define \( T:\mathbb{R}^{2} \to \mathbb{R}^{2} \) by
+\[
+T\!\left(
+\begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}
+\right)
+=
+\begin{bmatrix}
+x_{1} - x_{2}\\
+x_{1} + x_{2}
+\end{bmatrix}.
+\]
+
+You may assume \(T\) is a linear transformation.  
+\begin{enumerate}
+\item[(a)] Find \( A \), the matrix representation of \(T\).
+\item[(b)] Use \(A\) to explain why \(T\) is invertible.
+\item[(c)] Use \(A\) to find the rule for \(T^{-1}\).
+\end{enumerate}
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+T(e_{1}) = \begin{bmatrix}1\\1\end{bmatrix},
+\qquad
+T(e_{2}) = \begin{bmatrix}-1\\1\end{bmatrix},
+\qquad
+A = \begin{bmatrix}1 & -1\\ 1 & 1\end{bmatrix}.
+\]
+
+\[
+\det A = (1)(1) - (-1)(1) = 2 \quad \Rightarrow \quad A \text{ is invertible.}
+\]
+Since \(T = T_{A}\), it follows that \(T\) is invertible and
+\[
+T^{-1} = T_{A^{-1}}.
+\]
+
+\[
+A^{-1} = \frac{1}{2}
+\begin{bmatrix}
+1 & 1\\
+-1 & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\tfrac{1}{2} & \tfrac{1}{2}\\
+-\tfrac{1}{2} & \tfrac{1}{2}
+\end{bmatrix}.
+\]
+
+Thus
+\[
+T^{-1}
+\begin{bmatrix}
+x_{1}\\ x_{2}
+\end{bmatrix}
+=
+A^{-1}
+\begin{bmatrix}
+x_{1}\\ x_{2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\tfrac{1}{2}(x_{1}+x_{2})\\[6pt]
+\tfrac{1}{2}(-x_{1}+x_{2})
+\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 7
+% =========================================================
+\begin{tcolorbox}[title=Problem 7 — Original Statement and Solution]
+\noindent
+Let \(\theta\) be any angle and let \(A\) be the matrix which represents the counterclockwise rotation through \(\theta\).  
+Prove that for any vector
+\[
+\vec{u} =
+\begin{bmatrix} x\\ y \end{bmatrix} \in \mathbb{R}^{2},
+\quad
+|A\vec{u}| = |\vec{u}|
+\]
+—that is, rotations preserve length.
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+A =
+\begin{bmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{bmatrix},
+\qquad
+\vec{u} =
+\begin{bmatrix} x\\ y \end{bmatrix},
+\qquad
+A\vec{u} =
+\begin{bmatrix}
+x\cos\theta - y\sin\theta\\
+x\sin\theta + y\cos\theta
+\end{bmatrix}.
+\]
+
+\[
+|A\vec{u}|
+= \sqrt{(x\cos\theta - y\sin\theta)^{2} + (x\sin\theta + y\cos\theta)^{2}}
+\]
+
+Expand:
+\[
+= \sqrt{
+x^{2}\cos^{2}\theta - 2xy\cos\theta\sin\theta + y^{2}\sin^{2}\theta
++ x^{2}\sin^{2}\theta + 2xy\sin\theta\cos\theta + y^{2}\cos^{2}\theta
+}
+\]
+
+\[
+= \sqrt{
+x^{2}(\cos^{2}\theta+\sin^{2}\theta) + y^{2}(\sin^{2}\theta+\cos^{2}\theta)
+}
+= \sqrt{x^{2} + y^{2}}
+= |\vec{u}|.
+\]
+
+Hence rotations preserve length.
+\end{tcolorbox}
+
+% =========================================================
+% Problem 8
+% =========================================================
+\begin{tcolorbox}[title=Problem 8 — Original Statement and Solution]
+\noindent
+Fill in the blanks for an invertible \( n \times n \) matrix \( A \):
+\begin{enumerate}
+\item[(a)] \(\mathrm{rank}(A) = \underline{\hspace{1cm}}\)
+\item[(b)] The homogeneous system \( A\vec{x} = \vec{0} \) has only the \underline{\hspace{2cm}} solution.
+\item[(c)] \( A \) is row-reducible to the \underline{\hspace{2cm}} matrix.
+\end{enumerate}
+
+\bigskip
+\noindent
+\textbf{Solution:}
+\[
+\mathrm{rank}(A) = n, \qquad
+\text{homogeneous system has only the trivial solution,} \qquad
+A \text{ is row-reducible to the identity matrix.}
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 9
+% =========================================================
+\begin{tcolorbox}[title=Problem 9 — Original Statement and Solution]
+\noindent
+Let
+\[
+A =
+\begin{bmatrix}
+1 & 1 & 0 & 1 & 0\\
+2 & 3 & 4 & 0 & 1\\
+3 & 4 & 0 & 1 & 5\\
+6 & 8 & 4 & 2 & 6
+\end{bmatrix}.
+\]
+Give the reduced row echelon form of \(A\).
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+\begin{bmatrix}
+1 & 1 & 0 & 1 & 0\\
+2 & 3 & 4 & 0 & 1\\
+3 & 4 & 0 & 1 & 5\\
+6 & 8 & 4 & 2 & 6
+\end{bmatrix}
+\;\to\;
+\begin{bmatrix}
+1 & 0 & -4 & -1\\
+0 & 1 & 0 & 5\\
+0 & 0 & 4 & 4\\
+0 & 0 & 4 & 4
+\end{bmatrix}
+\]
+
+\[
+\to\;
+\begin{bmatrix}
+1 & 0 & -4 & -1\\
+0 & 1 & 0 & 5\\
+0 & 0 & 1 & -1\\
+0 & 0 & 0 & 0
+\end{bmatrix}.
+\]
+
+So the reduced row echelon form of \(A\) is
+\[
+\boxed{
+\begin{bmatrix}
+1 & 0 & 0 & -5\\
+0 & 1 & 0 & 5\\
+0 & 0 & 1 & -1\\
+0 & 0 & 0 & 0
+\end{bmatrix}}
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 10(a)
+% =========================================================
+\begin{tcolorbox}[title=Problem 10(a) — Original Statement and Solution]
+\noindent
+(a) Let
+\[
+A = \begin{bmatrix}1 & 2\\ 2 & 1\end{bmatrix}.
+\]
+Prove that if
+\[
+AB = \begin{bmatrix}0 & 0\\ 0 & 0\end{bmatrix},
+\]
+then
+\[
+B = \begin{bmatrix}0 & 0\\ 0 & 0\end{bmatrix}.
+\]
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+A = \begin{bmatrix}1 & 2\\ 2 & 1\end{bmatrix},
+\quad
+B = \begin{bmatrix}a & b\\ c & d\end{bmatrix},
+\quad
+AB =
+\begin{bmatrix}
+a + 2c & b + 2d\\
+2a + c & 2b + d
+\end{bmatrix}.
+\]
+
+If \(AB = \begin{bmatrix}0 & 0\\ 0 & 0\end{bmatrix}\), then
+\[
+a + 2c = 0, \quad 2a + c = 0
+\quad\Rightarrow\quad a = c = 0,
+\]
+and
+\[
+b + 2d = 0, \quad 2b + d = 0
+\quad\Rightarrow\quad b = d = 0.
+\]
+
+Hence
+\[
+B = \begin{bmatrix}0 & 0\\ 0 & 0\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 10(b)
+% =========================================================
+\begin{tcolorbox}[title=Problem 10(b) — Original Statement and Solution]
+\noindent
+Let
+\[
+C =
+\begin{bmatrix}
+0 & 1\\
+0 & 1
+\end{bmatrix}.
+\]
+Give the general form of a matrix \(D\) such that
+\[
+DC =
+\begin{bmatrix}
+0 & 0\\
+0 & 0
+\end{bmatrix}.
+\]
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+Let
+\[
+D =
+\begin{bmatrix}
+a & b\\
+c & d
+\end{bmatrix}.
+\]
+Then
+\[
+DC =
+\begin{bmatrix}
+c & d\\
+c & d
+\end{bmatrix}.
+\]
+
+For \(DC = \begin{bmatrix}0 & 0\\ 0 & 0\end{bmatrix}\), we must have
+\[
+c = 0, \qquad d = 0.
+\]
+
+Hence
+\[
+D =
+\begin{bmatrix}
+a & b\\
+0 & 0
+\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 11
+% =========================================================
+\begin{tcolorbox}[title=Problem 11 — Original Statement and Solution]
+\noindent
+In \(\mathbb{R}^{2}\), let
+\[
+\vec{u} = 
+\begin{bmatrix}
+1\\ 2
+\end{bmatrix},
+\qquad
+\vec{v} =
+\begin{bmatrix}
+2\\ 1
+\end{bmatrix}.
+\]
+Show that any vector
+\[
+\vec{w} =
+\begin{bmatrix}
+a\\ b
+\end{bmatrix}
+\]
+can be written as a linear combination
+\[
+\vec{w} = r\vec{u} + s\vec{v}.
+\]
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+We need to find scalars \(r\) and \(s\) such that
+\[
+r\begin{bmatrix}1\\2\end{bmatrix}
++ s\begin{bmatrix}2\\1\end{bmatrix}
+= \begin{bmatrix}a\\b\end{bmatrix}.
+\]
+
+This gives the system
+\[
+\begin{cases}
+r + 2s = a,\\
+2r + s = b.
+\end{cases}
+\]
+
+Multiply the first equation by 2:
+\[
+2r + 4s = 2a
+\]
+
+Subtract the second equation:
+\[
+(2r + 4s) - (2r + s) = 2a - b
+\quad\Rightarrow\quad
+3s = 2a - b
+\quad\Rightarrow\quad
+s = \frac{2a - b}{3}.
+\]
+
+Substitute into \(r + 2s = a\):
+\[
+r + 2\left(\frac{2a - b}{3}\right) = a
+\quad\Rightarrow\quad
+3r + 4a - 2b = 3a
+\quad\Rightarrow\quad
+3r = 3a - 4a + 2b = -a + 2b
+\quad\Rightarrow\quad
+r = \frac{-a + 2b}{3}.
+\]
+
+Hence
+\[
+\begin{bmatrix}a\\b\end{bmatrix}
+= \left(\frac{-a + 2b}{3}\right)
+\begin{bmatrix}1\\2\end{bmatrix}
++ \left(\frac{2a - b}{3}\right)
+\begin{bmatrix}2\\1\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 12
+% =========================================================
+\begin{tcolorbox}[title=Problem 12 — Original Statement and Solution]
+\noindent
+\begin{enumerate}
+\item[(a)] Is the matrix
+\[
+\begin{bmatrix}
+1 & 2 & 3\\
+4 & 5 & 6\\
+7 & 8 & 9
+\end{bmatrix}
+\]
+invertible? Why or why not?
+
+\item[(b)] The matrix
+\[
+A =
+\begin{bmatrix}
+1 & 1 & 1\\
+2 & 1 & 0\\
+0 & 1 & 1
+\end{bmatrix}
+\]
+is invertible. Find \(A^{-1}\) and use it to solve the equation
+\[
+A\vec{x} =
+\begin{bmatrix}
+1\\ -3\\ 2
+\end{bmatrix}.
+\]
+\end{enumerate}
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+% ---------- Part (a)
+\bigskip
+\noindent
+(a)\,
+Augment the matrix with the identity:
+\[
+\left[
+\begin{array}{ccc|ccc}
+1 & 2 & 3 & 1 & 0 & 0\\
+4 & 5 & 6 & 0 & 1 & 0\\
+7 & 8 & 9 & 0 & 0 & 1
+\end{array}
+\right]
+\to
+\left[
+\begin{array}{ccc|ccc}
+1 & 2 & 3 & 1 & 0 & 0\\
+0 & -3 & -6 & -4 & 1 & 0\\
+0 & -6 & -12 & -3 & 0 & 1
+\end{array}
+\right].
+\]
+
+Further row reduction leads to a row of zeros in the left block:
+\[
+\left[
+\begin{array}{ccc}
+1 & 2 & 3\\
+0 & -3 & -6\\
+0 & 0 & 0
+\end{array}
+\right],
+\]
+so the matrix cannot be reduced to the identity matrix.
+
+Therefore, the matrix is \textbf{not invertible}.
+
+% ---------- Part (b)
+\bigskip
+\noindent
+(b)\,
+Augment \(A\) with the identity:
+\[
+\left[
+\begin{array}{ccc|ccc}
+1 & 1 & 1 & 1 & 0 & 0\\
+2 & 1 & 0 & 0 & 1 & 0\\
+0 & 1 & 1 & 0 & 0 & 1
+\end{array}
+\right]
+\to
+\left[
+\begin{array}{ccc|ccc}
+1 & 1 & 1 & 1 & 0 & 0\\
+0 & -1 & -2 & -2 & 1 & 0\\
+0 & 1 & 1 & 0 & 0 & 1
+\end{array}
+\right]
+\to
+\left[
+\begin{array}{ccc|ccc}
+1 & 0 & -1 & 1 & 0 & 1\\
+0 & 1 & 2  & 2 & -1 & 0\\
+0 & 0 & 1  & 2 & -1 & -1
+\end{array}
+\right].
+\]
+
+Hence
+\[
+A^{-1} =
+\begin{bmatrix}
+1 & 0 & -1\\
+-2 & 1 & 2\\
+2 & -1 & -1
+\end{bmatrix}.
+\]
+
+Solve
+\[
+A\vec{x} =
+\begin{bmatrix}
+1\\ -3\\ 2
+\end{bmatrix}
+\quad\Rightarrow\quad
+\vec{x} =
+A^{-1}
+\begin{bmatrix}
+1\\ -3\\ 2
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & -1\\
+-2 & 1 & 2\\
+2 & -1 & -1
+\end{bmatrix}
+\begin{bmatrix}
+1\\ -3\\ 2
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1\\ -1\\ 3
+\end{bmatrix}.
+\]
+
+Thus,
+\[
+\boxed{
+\vec{x} =
+\begin{bmatrix}
+-1\\
+-1\\
+3
+\end{bmatrix}
+}.
+\]
+\end{tcolorbox}
+
+% =========================================================
+% Problem 13
+% =========================================================
+\begin{tcolorbox}[title=Problem 13 — Original Statement and Solution]
+\noindent
+\textbf{Problem 13 (Original Statement):}  
+
+Let
+\[
+A =
+\begin{bmatrix}
+1 & r\\
+2r & 1
+\end{bmatrix}.
+\]
+
+\begin{enumerate}
+\item[(a)] Find \(\det A\).
+\item[(b)] For what value(s) of \(r\) is \(A\) invertible?
+\item[(c)] In the cases when \(A\) is invertible, give \(A^{-1}\).
+\end{enumerate}
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+\det A = (1)(1) - (2r)(r) = 1 - 2r^{2}.
+\]
+
+\[
+\det A = 0 \quad \Rightarrow \quad 1 - 2r^{2} = 0
+\quad\Rightarrow\quad 2r^{2} = 1
+\quad\Rightarrow\quad r = \pm \frac{1}{\sqrt{2}}.
+\]
+
+Thus, \(A\) is invertible for all \(r \neq \pm \frac{1}{\sqrt{2}}\).
+
+\bigskip
+\[
+A^{-1}
+= \frac{1}{1 - 2r^{2}}
+\begin{bmatrix}
+1 & -r\\
+-2r & 1
+\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+\end{multicols}
+\end{document}
+

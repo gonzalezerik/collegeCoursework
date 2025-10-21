@@ -1,0 +1,1009 @@
+\documentclass[8pt]{extarticle}
+
+% --- Math + typography
+\usepackage{amsmath,amssymb}
+\usepackage[margin=0.40in]{geometry}
+\usepackage{microtype}
+\linespread{0.95}
+\setlength{\parskip}{1.8pt}
+\setlength{\parindent}{0pt}
+
+% --- Compact display math, arrays, aligns
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{3pt}%
+  \setlength\belowdisplayskip{3pt}%
+  \setlength\abovedisplayshortskip{2pt}%
+  \setlength\belowdisplayshortskip{2pt}%
+}
+\makeatother
+\setlength{\arraycolsep}{2pt}
+\renewcommand{\arraystretch}{0.93}
+\setlength{\jot}{1.5pt}
+\mathsurround=0pt
+
+% --- Lists tighter
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+
+% --- Boxes + columns
+\usepackage[most]{tcolorbox}
+\usepackage{multicol}
+\setlength{\columnsep}{0.22em}
+
+\tcbset{
+  colback=white,
+  colframe=black!55,
+  boxrule=0.35pt,
+  arc=0.8pt,
+  boxsep=1.2pt,
+  left=1.2pt,right=1.2pt,top=1.2pt,bottom=1.2pt,
+  before skip=2.2pt, after skip=2.2pt,
+  enhanced,
+  breakable,
+  fonttitle=\bfseries\footnotesize,
+  title style={opacityfill=0}
+}
+
+\begin{document}
+\scriptsize
+
+\begin{center}
+  \normalsize\textbf{Math 262 -- Solutions to Practice Problems}
+\end{center}
+
+\begin{multicols}{2}
+\raggedcolumns
+
+% ---------------------- Problem 1 ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{1.} Let \( T:\mathbb{R}^3 \to \mathbb{R}^2 \) be given by
+\[
+T\!\left(\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}\right)
+=\begin{bmatrix}x_{1}+x_{2}\\ x_{2}+x_{3}\end{bmatrix}.
+\]
+\begin{enumerate}
+\item[(a)] Show that \(T\) is a linear transformation.
+\item[(b)] Find the matrix of \(T\).
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}
+\item
+\[
+a^{(*)}\;T\!\left(\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}
++\begin{bmatrix}y_{1}\\y_{2}\\y_{3}\end{bmatrix}\right)
+=T\!\left(\begin{bmatrix}x_{1}+y_{1}\\x_{2}+y_{2}\\x_{3}+y_{3}\end{bmatrix}\right)
+\]
+\[
+=\begin{bmatrix}x_{1}+y_{2}\\x_{2}+y_{3}\end{bmatrix}
+-\begin{bmatrix}(x_{1}+y_{1})+(x_{2}+y_{2})\\(x_{2}+y_{2})+(x_{3}+y_{3})\end{bmatrix}
+\]
+\[
+=\begin{bmatrix}x_{1}+y_{2}\\x_{2}+y_{3}\end{bmatrix}
+-\begin{bmatrix}x_{1}+x_{2}+y_{1}+y_{2}\\x_{2}+x_{3}+y_{2}+y_{3}\end{bmatrix}
+= T\!\left(\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}\right)
++T\!\left(\begin{bmatrix}y_{1}\\y_{2}\\y_{3}\end{bmatrix}\right).
+\]
+(i) For \(r\in\mathbb{R}\):
+\[
+T\!\left(r\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}\right)
+=\begin{bmatrix}rx_{1}+rx_{2}\\rx_{2}+rx_{3}\end{bmatrix}
+-r\begin{bmatrix}x_{1}+x_{2}\\x_{2}+x_{3}\end{bmatrix}
+=r\,T\!\left(\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}\right).
+\]
+So \(T\) is linear.
+\item
+\[
+T(e_{1})=\begin{bmatrix}1\\0\end{bmatrix},\quad
+T(e_{2})=\begin{bmatrix}1\\1\end{bmatrix},\quad
+T(e_{3})=\begin{bmatrix}0\\1\end{bmatrix}
+\Rightarrow
+A=\begin{bmatrix}1&1&0\\0&1&1\end{bmatrix}.
+\]
+\end{enumerate}
+\end{tcolorbox}
+
+% ---------------------- Problem 2 ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{2.} Given \(A\vec{x}=\vec{b}\), suppose the rref of the augmented matrix is
+\[
+\left[
+\begin{array}{cccc|c}
+1&0&0&1&0\\
+0&1&0&2&1\\
+0&0&1&3&2\\
+0&0&0&0&0
+\end{array}
+\right].
+\]
+Give the general solution to the system.
+
+\textbf{Solution.}
+\[
+\begin{cases}
+x_{1}+x_{4}=0\\
+x_{2}+2x_{4}=1\\
+x_{3}+3x_{4}=2
+\end{cases}
+\Rightarrow
+\begin{aligned}
+x_{1}&=-x_{4}\\
+x_{2}&=2x_{4}+1\\
+x_{3}&=-3x_{4}+2
+\end{aligned}
+\quad(x_{4}=r).
+\]
+\[
+\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\\x_{4}\end{bmatrix}
+=\begin{bmatrix}-r\\2r+1\\-3r+2\\r\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% ---------------------- Problem 3 (full, with row ops) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 3 (Original Statement):}
+Given
+\(
+\begin{cases}
+x_{1}-x_{3}=1,\\
+2x_{1}-2x_{2}=1,\\
+3x_{1}-4x_{2}+x_{3}=a,
+\end{cases}
+\)
+find (a) no solution, (b) exactly one solution, (c) infinitely many solutions; give the general solution when infinite.
+
+\textbf{Solution.}
+\[
+\left[
+\begin{array}{ccc|c}
+1&0&-1&1\\
+-2&2&0&1\\
+3&-4&1&a
+\end{array}
+\right]
+\]
+Row ops: \(R_{2}\to R_{2}+2R_{1}\), \(R_{3}\to R_{3}-3R_{1}\).
+\[
+\left[
+\begin{array}{ccc|c}
+1&0&-1&1\\
+0&-2&2&-1\\
+0&-4&4&a-3
+\end{array}
+\right]
+\]
+Row op: \(R_{2}\to (-\tfrac12)R_{2}\).
+\[
+\left[
+\begin{array}{ccc|c}
+1&0&-1&1\\
+0&1&-1&\tfrac12\\
+0&-4&4&a-3
+\end{array}
+\right]
+\]
+Row op: \(R_{3}\to R_{3}+4R_{2}\).
+\[
+\left[
+\begin{array}{ccc|c}
+1&0&-1&1\\
+0&1&-1&\tfrac12\\
+0&0&0&a-1
+\end{array}
+\right]
+\]
+(a) No solution if \(a\neq1\). \quad (b) Never exactly one. \quad (c) Infinitely many if \(a=1\).
+
+If \(a=1\), let \(x_{3}=r\). Then \(x_{2}=\tfrac12+r\), \(x_{1}=1+r\), so
+\(
+\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\end{bmatrix}
+=\begin{bmatrix}1+r\\ \tfrac12+r\\ r\end{bmatrix}.
+\)
+\end{tcolorbox}
+
+% ---------------------- Problem 4 ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+In \(\mathbb{R}^{2}\), let
+\(
+\vec{u}=\begin{bmatrix}\tfrac{1}{\sqrt{10}}\\[4pt]\tfrac{3}{\sqrt{10}}\end{bmatrix}.
+\)
+\begin{enumerate}
+\item[(a)] Show that \(\vec{u}\) is a unit vector.
+\item[(b)] Let \(L\) be the line spanned by \(\vec{u}\), and let
+\(
+\vec{x}=\begin{bmatrix}-1\\4\end{bmatrix}.
+\)
+Find the reflection \(\mathrm{ref}_{L}(\vec{x})\).
+\end{enumerate}
+
+\textbf{Solution.}
+\[
+|\vec{u}|=\sqrt{\big(\tfrac1{\sqrt{10}}\big)^{2}+\big(\tfrac3{\sqrt{10}}\big)^{2}}=1,\qquad
+\mathrm{proj}_{L}(\vec{x})=\frac{\vec{x}\cdot\vec{u}}{\vec{u}\cdot\vec{u}}\vec{u}.
+\]
+\[
+\vec{x}\cdot\vec{u}
+=\begin{bmatrix}-1\\4\end{bmatrix}\!\cdot\!
+\begin{bmatrix}\tfrac1{\sqrt{10}}\\[2pt]\tfrac3{\sqrt{10}}\end{bmatrix}
+=-\tfrac1{\sqrt{10}}+\tfrac{12}{\sqrt{10}}=\tfrac{11}{\sqrt{10}},
+\quad
+\mathrm{proj}_{L}(\vec{x})
+=\begin{bmatrix}\tfrac{11}{10}\\[2pt]\tfrac{33}{10}\end{bmatrix}.
+\]
+\[
+\mathrm{ref}_{L}(\vec{x})=2\,\mathrm{proj}_{L}(\vec{x})-\vec{x}.
+\]
+\end{tcolorbox}
+
+% ---------------------- Problem 5 (full original content) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Original Problem:}
+In \(\mathbb{R}^{3}\), let \(L\) be the line spanned by
+\(
+\vec{w}=\begin{bmatrix}\tfrac1{\sqrt{2}}\\[2pt]0\\[2pt]\tfrac1{\sqrt{2}}\end{bmatrix}
+\),
+\(
+\vec{x}=\begin{bmatrix}1\\1\\1\end{bmatrix}.
+\)
+Verify that \(\vec{x}-\mathrm{proj}_{L}(\vec{x})\) is orthogonal to \(\vec{w}\).
+
+\textbf{Solution.}
+\[
+2\begin{bmatrix}\frac{11}{10}\\[2pt]\frac{33}{10}\end{bmatrix}
+-
+\begin{bmatrix}-1\\[2pt]4\end{bmatrix}
+=
+\begin{bmatrix}\frac{22}{10}\\[2pt]\frac{66}{10}\end{bmatrix}
+-
+\begin{bmatrix}-1\\[2pt]4\end{bmatrix}
+=
+\begin{bmatrix}\frac{22}{10}+1\\[2pt]\frac{66}{10}-4\end{bmatrix}
+=
+\begin{bmatrix}\frac{16}{5}\\[2pt]\frac{13}{5}\end{bmatrix}.
+\]
+\textit{Note: You could also use the matrix formula for this one.}
+
+\[
+\mathrm{proj}_{L}(\vec{x})
+=\frac{\vec{x}\cdot\vec{w}}{\vec{w}\cdot\vec{w}}\vec{w}
+= \frac{2}{\sqrt{2}}
+\begin{bmatrix}\frac{1}{\sqrt{2}}\\[2pt]\frac{1}{\sqrt{2}}\end{bmatrix}
+= \begin{bmatrix}1\\1\end{bmatrix}.
+\]
+\[
+\vec{x}-\mathrm{proj}_{L}(\vec{x})
+=\begin{bmatrix}1\\1\\1\end{bmatrix}
+-\begin{bmatrix}0\\1\\0\end{bmatrix}
+=\begin{bmatrix}1\\0\\1\end{bmatrix}.
+\]
+\[
+\begin{bmatrix}1\\0\\1\end{bmatrix}\cdot
+\begin{bmatrix}\tfrac1{\sqrt{2}}\\[2pt]0\\[2pt]\tfrac1{\sqrt{2}}\end{bmatrix}=0,
+\quad \text{so it is orthogonal.}
+\]
+\end{tcolorbox}
+
+% ---------------------- Problem 6 ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 6 (Original Statement):}
+Define \(T:\mathbb{R}^{2}\to\mathbb{R}^{2}\) by
+\(
+T\big(\begin{bmatrix}x_{1}\\x_{2}\end{bmatrix}\big)
+=\begin{bmatrix}x_{1}-x_{2}\\x_{1}+x_{2}\end{bmatrix}.
+\)
+Assume \(T\) is linear.
+\begin{enumerate}
+\item[(a)] Find \(A\), the matrix of \(T\).
+\item[(b)] Use \(A\) to explain why \(T\) is invertible.
+\item[(c)] Use \(A\) to find the rule for \(T^{-1}\).
+\end{enumerate}
+
+\textbf{Solution.}
+\[
+T(e_{1})=\begin{bmatrix}1\\1\end{bmatrix},\quad
+T(e_{2})=\begin{bmatrix}-1\\1\end{bmatrix},\quad
+A=\begin{bmatrix}1&-1\\1&1\end{bmatrix}.
+\]
+\[
+\det A=(1)(1)-(-1)(1)=2\Rightarrow A\text{ invertible},\;
+T^{-1}=T_{A^{-1}},\;
+A^{-1}=\tfrac12\begin{bmatrix}1&1\\-1&1\end{bmatrix}.
+\]
+\[
+T^{-1}\!\begin{bmatrix}x_{1}\\x_{2}\end{bmatrix}
+=\begin{bmatrix}\tfrac12(x_{1}+x_{2})\\[2pt]\tfrac12(-x_{1}+x_{2})\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% ---------------------- Problem 7 (restored full original solution) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 7 (Original Statement):}  
+
+Let \(\theta\) be any angle and let \(A\) be the matrix which represents the counterclockwise rotation through \(\theta\).  
+Prove that for any vector
+\[
+\vec{u} =
+\begin{bmatrix} x\\ y \end{bmatrix} \in \mathbb{R}^{2},
+\quad
+|A\vec{u}| = |\vec{u}|
+\]
+—that is, rotations preserve length.
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+\[
+A =
+\begin{bmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{bmatrix},
+\qquad
+\vec{u} =
+\begin{bmatrix} x\\ y \end{bmatrix},
+\qquad
+A\vec{u} =
+\begin{bmatrix}
+x\cos\theta - y\sin\theta\\
+x\sin\theta + y\cos\theta
+\end{bmatrix}.
+\]
+
+\[
+|A\vec{u}|
+= \sqrt{(x\cos\theta - y\sin\theta)^{2} + (x\sin\theta + y\cos\theta)^{2}}
+\]
+
+Expand:
+\[
+= \sqrt{
+x^{2}\cos^{2}\theta - 2xy\cos\theta\sin\theta + y^{2}\sin^{2}\theta
++ x^{2}\sin^{2}\theta + 2xy\sin\theta\cos\theta + y^{2}\cos^{2}\theta
+}
+\]
+
+\[
+= \sqrt{
+x^{2}(\cos^{2}\theta+\sin^{2}\theta) + y^{2}(\sin^{2}\theta+\cos^{2}\theta)
+}
+= \sqrt{x^{2} + y^{2}}
+= |\vec{u}|.
+\]
+
+Hence rotations preserve length.
+\end{tcolorbox}
+% ---------------------- Problem 8 ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 8 (Original Statement):}
+Fill in the blanks for an invertible \(n\times n\) matrix \(A\):
+\begin{enumerate}
+\item[(a)] \(\mathrm{rank}(A)=\underline{\hspace{1cm}}\)
+\item[(b)] The homogeneous system \(A\vec{x}=\vec{0}\) has only the \underline{\hspace{2cm}} solution.
+\item[(c)] \(A\) is row-reducible to the \underline{\hspace{2cm}} matrix.
+\end{enumerate}
+
+\textbf{Solution.}
+\[
+\mathrm{rank}(A)=n,\qquad \text{only the trivial solution},\qquad
+A\text{ row-reduces to the identity}.
+\]
+\end{tcolorbox}
+
+% ---------------------- Problem 9 (with row ops) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+Let
+\(
+A=\begin{bmatrix}
+1&1&0&1&0\\
+2&3&4&0&1\\
+3&4&0&1&5\\
+6&8&4&2&6
+\end{bmatrix}.
+\)
+Give the reduced row echelon form of \(A\).
+
+\textbf{Solution.}
+\[
+\begin{bmatrix}
+1&1&0&1&0\\
+2&3&4&0&1\\
+3&4&0&1&5\\
+6&8&4&2&6
+\end{bmatrix}
+\]
+Row ops: \(R_{2}\!\to\!R_{2}-2R_{1}\), \(R_{3}\!\to\!R_{3}-3R_{1}\), \(R_{4}\!\to\!R_{4}-6R_{1}\).
+\[
+\begin{bmatrix}
+1&1&0&1&0\\
+0&1&4&-2&1\\
+0&1&0&-2&5\\
+0&2&4&-4&6
+\end{bmatrix}
+\]
+Row ops: \(R_{3}\!\to\!R_{3}-R_{2}\), \(R_{4}\!\to\!R_{4}-2R_{2}\).
+\[
+\begin{bmatrix}
+1&1&0&1&0\\
+0&1&4&-2&1\\
+0&0&-4&0&4\\
+0&0&-4&0&4
+\end{bmatrix}
+\]
+Row ops: \(R_{3}\!\to\!(-\tfrac14)R_{3}\), \(R_{4}\!\to\!R_{4}-R_{3}\).
+\[
+\begin{bmatrix}
+1&1&0&1&0\\
+0&1&4&-2&1\\
+0&0&1&0&-1\\
+0&0&0&0&0
+\end{bmatrix}
+\]
+Row op: \(R_{1}\!\to\!R_{1}-4R_{3}\).
+\[
+\boxed{
+\begin{bmatrix}
+1&0&0&-5\\
+0&1&0&5\\
+0&0&1&-1\\
+0&0&0&0
+\end{bmatrix}}
+\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Quick Determinant Tips, colframe=black!60!white, colback=gray!2]
+\small
+\(\det(A)\) changes sign when rows are swapped;  
+scaling a row by \(k\) multiplies \(\det\) by \(k\);  
+if two rows are identical or one is all zeros → \(\det(A)=0\).
+\end{tcolorbox}
+
+% ---------------------- Bonus: Nonlinear Example ----------------------
+\begin{tcolorbox}[title=Example – Transformation That Is Not Linear]
+Let \(T:\mathbb{R}^2\to\mathbb{R}\) be defined by \(T(x_1,x_2)=x_1^2+x_2.\)
+\[
+T(\vec{x}+\vec{y})=(x_1+y_1)^2+(x_2+y_2)
+=x_1^2+2x_1y_1+y_1^2+x_2+y_2
+\neq T(\vec{x})+T(\vec{y})
+\]
+(because of the \(2x_1y_1\) term).  
+Thus \(T\) fails additivity ⇒ not linear.
+\end{tcolorbox}
+
+% ---------------------- Bonus: Subspace Proof ----------------------
+\begin{tcolorbox}[title=Proof – Orthogonal Set Is a Subspace]
+Let \(\vec u\in\mathbb{R}^2\) and define \(S=\{\vec x\in\mathbb{R}^2\mid \vec x\cdot\vec u=0\}\).
+\begin{itemize}
+\item If \(\vec x,\vec y\in S\), then  
+\((\vec x+\vec y)\cdot\vec u
+= \vec x\cdot\vec u+\vec y\cdot\vec u=0+0=0\)
+⇒ \(\vec x+\vec y\in S.\)
+\item If \(k\in\mathbb{R}\) and \(\vec x\in S\), then  
+\((k\vec x)\cdot\vec u
+= k(\vec x\cdot\vec u)=k(0)=0\)
+⇒ \(k\vec x\in S.\)
+\end{itemize}
+Hence \(S\) is closed under addition and scalar multiplication ⇒ \(S\) is a subspace.
+\end{tcolorbox}
+
+
+% ---------------------- Problem 10(a) (1:1 handwritten version) ----------------------
+% ---------------------- Problem 10(a,b) — Original Statements and Solutions (compressed full) ----------------------
+% ---------------------- Problem 10(a,b) — Original Statements and Soluti% ---------------------- Problem 10(a,b) — Original Statements and Solutions (compact, matches original) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 10(a) (Original Statement):}\quad
+Let
+\[
+A=\begin{bmatrix}1&2\\[2pt]2&1\end{bmatrix}.
+\]
+Prove that if
+\[
+AB=\begin{bmatrix}0&0\\[2pt]0&0\end{bmatrix},
+\]
+then
+\[
+B=\begin{bmatrix}0&0\\[2pt]0&0\end{bmatrix}.
+\]
+
+\smallskip
+\textbf{Solution.}
+Let \(B=\begin{bmatrix}a&b\\ c&d\end{bmatrix}\).
+Then
+\[
+AB=
+\begin{bmatrix}1&2\\ 2&1\end{bmatrix}
+\begin{bmatrix}a&b\\ c&d\end{bmatrix}
+=
+\begin{bmatrix}a+2c & b+2d\\[2pt] 2a+c & 2b+d\end{bmatrix}.
+\]
+Setting \(AB=0\) gives
+\[
+a+2c=0,\;2a+c=0 \ \Rightarrow\ a=c=0, \qquad
+b+2d=0,\;2b+d=0 \ \Rightarrow\ b=d=0,
+\]
+so \(B=0\).
+
+\medskip
+\textbf{Problem 10(b) (Original Statement):}\quad
+Let
+\[
+C=\begin{bmatrix}0&1\\[2pt]0&1\end{bmatrix}.
+\]
+Give the general form of a matrix \(D\) such that
+\[
+\boxed{\,C D=\begin{bmatrix}0&0\\[2pt]0&0\end{bmatrix}\,}.
+\]
+
+\smallskip
+\textbf{Solution.}
+Let \(D=\begin{bmatrix}a&b\\ c&d\end{bmatrix}\).
+Then
+\[
+C D=
+\begin{bmatrix}0&1\\ 0&1\end{bmatrix}
+\begin{bmatrix}a&b\\ c&d\end{bmatrix}
+=
+\begin{bmatrix}c&d\\ c&d\end{bmatrix}.
+\]
+For \(C D=0\) we need \(c=0\) and \(d=0\).
+Hence the general form is
+\[
+D=\begin{bmatrix}a&b\\ 0&0\end{bmatrix}.
+\]
+\end{tcolorbox}
+% ---------------------- Problem 11 (match midtermOnePage) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 11 (Original Statement):}  
+
+In \(\mathbb{R}^{2}\), let
+\[
+\vec{u}=
+\begin{bmatrix}1\\2\end{bmatrix},\qquad
+\vec{v}=
+\begin{bmatrix}2\\1\end{bmatrix}.
+\]
+Show that any vector
+\[
+\vec{w}=
+\begin{bmatrix}a\\b\end{bmatrix}
+\]
+can be written as a linear combination
+\(\vec{w}=r\vec{u}+s\vec{v}\).
+
+\bigskip
+\noindent
+\textbf{Solution:}
+
+We need to find scalars \(r\) and \(s\) such that
+\[
+r
+\begin{bmatrix}1\\2\end{bmatrix}
++
+s
+\begin{bmatrix}2\\1\end{bmatrix}
+=
+\begin{bmatrix}a\\b\end{bmatrix}.
+\]
+This gives the system
+\[
+\begin{cases}
+r+2s=a,\\
+2r+s=b.
+\end{cases}
+\]
+
+Multiply the first equation by \(2\):
+\[
+2r+4s=2a
+\]
+Subtract the second equation:
+\[
+(2r+4s)-(2r+s)=2a-b
+\quad\Rightarrow\quad
+3s=2a-b
+\quad\Rightarrow\quad
+s=\dfrac{2a-b}{3}.
+\]
+
+Substitute into \(r+2s=a\):
+\[
+r+2\!\left(\dfrac{2a-b}{3}\right)=a
+\quad\Rightarrow\quad
+3r+4a-2b=3a
+\quad\Rightarrow\quad
+3r=-a+2b
+\quad\Rightarrow\quad
+r=\dfrac{-a+2b}{3}.
+\]
+
+Hence
+\[
+\begin{bmatrix}a\\b\end{bmatrix}
+=
+\left(\dfrac{-a+2b}{3}\right)
+\begin{bmatrix}1\\2\end{bmatrix}
++
+\left(\dfrac{2a-b}{3}\right)
+\begin{bmatrix}2\\1\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+% ---------------------- Problem 12 (full, with row ops & wrapped) ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\begin{enumerate}
+\item[(a)] Is
+\(
+\begin{bmatrix}
+1&2&3\\
+4&5&6\\
+7&8&9
+\end{bmatrix}
+\)
+invertible? Why or why not?
+\item[(b)] Let
+\(A=\begin{bmatrix}1&1&1\\2&1&0\\0&1&1\end{bmatrix}\).
+Find \(A^{-1}\) and solve
+\(A\vec{x}=\begin{bmatrix}1\\-3\\2\end{bmatrix}\).
+\end{enumerate}
+
+\textbf{Solution.}
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&2&3&1&0&0\\
+4&5&6&0&1&0\\
+7&8&9&0&0&1
+\end{array}
+\right]
+\]
+Row ops: \(R_2\to R_2-4R_1\), \(R_3\to R_3-7R_1\).
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&2&3&1&0&0\\
+0&-3&-6&-4&1&0\\
+0&-6&-12&-7&0&1
+\end{array}
+\right]
+\]
+Row op: \(R_3\to R_3-2R_2\).
+\[
+\left[
+\begin{array}{ccc}
+1&2&3\\
+0&-3&-6\\
+0&0&0
+\end{array}
+\right]
+\Rightarrow \text{not invertible.}
+\]
+
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&1&1&1&0&0\\
+2&1&0&0&1&0\\
+0&1&1&0&0&1
+\end{array}
+\right]
+\]
+Row op: \(R_2\to R_2-2R_1\).
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&1&1&1&0&0\\
+0&-1&-2&-2&1&0\\
+0&1&1&0&0&1
+\end{array}
+\right]
+\]
+Row ops: \(R_2\to -R_2\), \(R_1\to R_1-R_3\).
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&0&-1&1&0&1\\
+0&1&2&2&-1&0\\
+0&1&1&0&0&1
+\end{array}
+\right]
+\]
+Row op: \(R_3\to R_3-R_2\).
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&0&-1&1&0&1\\
+0&1&2&2&-1&0\\
+0&0&-1&-2&1&1
+\end{array}
+\right]
+\]
+Row op: \(R_3\to -R_3\).
+\[
+\left[
+\begin{array}{ccc|ccc}
+1&0&-1&1&0&1\\
+0&1&2&2&-1&0\\
+0&0&1&2&-1&-1
+\end{array}
+\right]
+\]
+Thus
+\(A^{-1}=\begin{bmatrix}1&0&-1\\-2&1&2\\2&-1&-1\end{bmatrix}\),
+\(
+\vec{x}=A^{-1}\!\begin{bmatrix}1\\-3\\2\end{bmatrix}
+=\begin{bmatrix}-1\\-1\\3\end{bmatrix}.
+\)
+\end{tcolorbox}
+
+% ---------------------- Problem 13 ----------------------
+\begin{tcolorbox}[title=]
+\noindent
+\textbf{Problem 13 (Original Statement):}
+Let
+\(A=\begin{bmatrix}1&r\\2r&1\end{bmatrix}\).
+\begin{enumerate}
+\item[(a)] Find \(\det A\).
+\item[(b)] For which \(r\) is \(A\) invertible?
+\item[(c)] When invertible, give \(A^{-1}\).
+\end{enumerate}
+
+\textbf{Solution.}
+\[
+\det A=(1)(1)-(2r)(r)=1-2r^{2}.
+\]
+\[
+\det A=0\Rightarrow 1-2r^{2}=0\Rightarrow 2r^{2}=1\Rightarrow r=\pm\tfrac{1}{\sqrt{2}}.
+\]
+Thus \(A\) invertible for \(r\neq \pm\tfrac{1}{\sqrt{2}}\).
+\[
+A^{-1}=\frac{1}{1-2r^{2}}
+\begin{bmatrix}1&-r\\-2r&1\end{bmatrix}.
+\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Key Formulas and Facts, colframe=black!60!white, colback=gray!2]
+\begin{itemize}
+\item \textbf{Matrix Invertibility Tests:}
+  \begin{itemize}
+  \item $\det(A)\neq0 \iff A$ invertible
+  \item $A$ invertible $\iff$ $\mathrm{rank}(A)=n \iff$ rref$(A)=I$
+  \end{itemize}
+\item \textbf{Inverse of $2\times2$:}\quad
+$A^{-1}=\dfrac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$
+\item \textbf{Linear Transformation:}\;
+$T(\mathbf{x})=A\mathbf{x}$, \;
+$T$ linear $\iff$ $T(c\mathbf{x}+\mathbf{y})=cT(\mathbf{x})+T(\mathbf{y})$
+\item \textbf{Composition:}\; $T_B\!\circ T_A = T_{BA}$
+\item \textbf{Projection onto a line:}\;
+$\mathrm{proj}_{\mathbf{u}}(\mathbf{x})=
+\dfrac{\mathbf{x}\cdot\mathbf{u}}{\mathbf{u}\cdot\mathbf{u}}\mathbf{u}$
+\item \textbf{Reflection across a line:}\;
+$\mathrm{ref}_{L}(\mathbf{x})=2\,\mathrm{proj}_{L}(\mathbf{x})-\mathbf{x}$
+\item \textbf{Rotation matrix:}\;
+$\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$ preserves length.
+\item \textbf{General solution of $A\mathbf{x}=\mathbf{b}$:}\;
+$\mathbf{x}=\mathbf{x}_p+\mathbf{x}_h$
+\end{itemize}
+\end{tcolorbox}
+% ---------------------- Quick Reference -- Matrix Operations, Rank, Determinant & Solving A x = b (compact) ----------------------
+\begin{tcolorbox}[title={Quick Reference -- Matrix Operations, Rank, Determinant \& Solving $A\vec{x}=\vec{b}$}, colframe=black!60!white, colback=gray!2, fontupper=\tiny]
+\begingroup\setlength{\arraycolsep}{1.2pt}\renewcommand{\arraystretch}{0.9}
+\textbf{Matrix operations.}
+\[
+A=\begin{bmatrix}1&2\\3&4\end{bmatrix},\;
+B=\begin{bmatrix}5&6\\7&8\end{bmatrix},\quad
+A+B=\begin{bmatrix}6&8\\10&12\end{bmatrix},\;
+A-B=\begin{bmatrix}-4&-4\\-4&-4\end{bmatrix},\;
+2A=\begin{bmatrix}2&4\\6&8\end{bmatrix}.
+\]
+\textbf{Multiplication (row$\times$col):}\;
+\(
+AB=\begin{bmatrix}
+1\cdot5+2\cdot7 & 1\cdot6+2\cdot8\\
+3\cdot5+4\cdot7 & 3\cdot6+4\cdot8
+\end{bmatrix}
+=\begin{bmatrix}19&22\\43&50\end{bmatrix}
+\).
+\;Size rule: \((m\times n)(n\times p)\to(m\times p)\).
+
+\textbf{REF vs.\ RREF examples.}
+\[
+\text{REF }
+\left[\!\begin{array}{ccc|c}
+1&2&-1&3\\
+0&1&4&5\\
+0&0&0&1
+\end{array}\!\right]
+\quad
+\text{RREF }
+\left[\!\begin{array}{ccc|c}
+1&0&-1&1\\
+0&1&2&2\\
+0&0&1&-1
+\end{array}\!\right]
+\]
+REF: zeros below pivots. RREF: pivots are 1 and the only nonzero in their columns.
+
+\textbf{Rank and nullity.}\;
+\(\mathrm{rank}(A)=\#\) pivot cols,\;
+\(\text{nullity}(A)=n-\mathrm{rank}(A)\).
+If \(\mathrm{rank}([A\mid \vec b])>\mathrm{rank}(A)\Rightarrow\) no solution.
+If consistent: free vars \(\Rightarrow\) infinitely many; no free vars \(\Rightarrow\) unique.
+
+\textbf{Solving \(A\vec{x}=\vec{b}\).}\;
+1) Form \([A\mid \vec b]\).\;
+2) Row-reduce to RREF.\;
+3) Pivots \(\Rightarrow\) solved vars; nonpivots \(\Rightarrow\) parameters.\;
+4) \(\vec x=\vec x_p+\vec x_h\) (particular + homogeneous).
+
+\textbf{Determinant essentials.}\;
+Row swap \(\Rightarrow\) sign flip;\;
+\(R_i\gets kR_i\Rightarrow\) det\(\times k\);\;
+\(R_i\gets R_i+kR_j\Rightarrow\) det unchanged;\;
+triangular \(U\): \(\det(U)=\prod u_{ii}\);\;
+square \(A\): \(\det(A)\neq0\Leftrightarrow \mathrm{rank}(A)=n\Leftrightarrow \text{rref}(A)=I_n\) (invertible).
+
+\textbf{Examples.}\;
+\(\det\!\begin{bmatrix}a&b\\ c&d\end{bmatrix}=ad-bc\),\quad
+\(\det\!\begin{bmatrix}1&2&3\\ 4&5&6\\ 7&8&9\end{bmatrix}=0\Rightarrow \mathrm{rank}=2<3\) (not invertible).
+\endgroup
+\end{tcolorbox}
+% ---------------------- How to Solve A x = b (compact guide) ----------------------
+\begin{tcolorbox}[title={How to Solve $A\vec{x}=\vec{b}$ (Step-by-step)}, colframe=black!60!white, colback=gray!2]
+\scriptsize
+\textbf{Goal.} Find all $\vec{x}$ with $A\vec{x}=\vec{b}$.
+
+\textbf{Recipe.}
+\begin{enumerate}[leftmargin=1.1em,itemsep=1pt]
+\item Form the augmented matrix $[A\mid \vec{b}]$.
+\item Row-reduce $[A\mid \vec{b}]$ to \textbf{RREF} using elementary row ops (swap, scale a row, add multiple of a row).
+\item \textbf{Check consistency:} any row $[0\ 0\ \cdots\ 0\mid c]$ with $c\neq0$ means \emph{no solution}.
+\item Identify \textbf{pivot columns} (leading 1’s) and \textbf{free} columns (no pivot).
+\item Solve pivot variables in terms of the free variables (parameters $r,s,\ldots$).
+\item Write the general solution as
+\[
+\vec{x}=\vec{x}_p+\vec{x}_h,\qquad
+\vec{x}_h=\text{all solutions to }A\vec{x}=\vec{0}.
+\]
+\end{enumerate}
+
+\textbf{Rank test (useful shortcut).}
+\[
+\mathrm{rank}([A\mid\vec{b}])>\mathrm{rank}(A)\ \Rightarrow\ \text{no solution}.
+\]
+If consistent:
+\[
+\text{free vars present }\Rightarrow\ \text{infinitely many solutions},\quad
+\text{no free vars }\Rightarrow\ \text{unique solution}.
+\]
+For square $n\times n$: unique solution $\Leftrightarrow \mathrm{rank}(A)=n$.
+
+\textbf{Mini example (free variable).}
+\[
+\left[
+\begin{array}{ccc|c}
+1&2&1&4\\
+0&1&3&2
+\end{array}
+\right]
+\ \longrightarrow\ 
+\left[
+\begin{array}{ccc|c}
+1&0&-5&0\\
+0&1&3&2
+\end{array}
+\right].
+\]
+Let $x_3=t$ (free). Then $x_2=2-3t$, $x_1=5t$.
+\[
+\vec{x}=\begin{bmatrix}0\\2\\0\end{bmatrix}
++t\begin{bmatrix}5\\-3\\1\end{bmatrix}
+=\ \underbrace{\begin{bmatrix}0\\2\\0\end{bmatrix}}_{\vec{x}_p}
++\ t\ \underbrace{\begin{bmatrix}5\\-3\\1\end{bmatrix}}_{\text{one basis vector of }\vec{x}_h}.
+\]
+
+\textbf{Mini example (no solution).}
+\[
+\left[
+\begin{array}{ccc|c}
+1&2&-1&3\\
+0&1&4&5\\
+0&0&0&1
+\end{array}
+\right]
+\ \Rightarrow\ \text{row }[0\ 0\ 0\mid 1]\ \Rightarrow\ \text{inconsistent (no solution)}.
+\]
+\end{tcolorbox}
+% ---------------------- Problem 2 and 3 — Explanations and Solutions (compact) ----------------------
+\begin{tcolorbox}[title=Problems 2 and 3 — Explanations and Solutions, fontupper=\scriptsize]
+\noindent
+\textbf{Problem 2.}\; Given the RREF
+\[
+\begin{bmatrix}
+1&0&0&1&0\\
+0&1&0&2&1\\
+0&0&1&3&2\\
+0&0&0&0&0
+\end{bmatrix},
+\]
+pivots are in \(x_1,x_2,x_3\); \(x_4\) is free. Rows give
+\[
+x_1+x_4=0,\quad x_2+2x_4=1,\quad x_3+3x_4=2.
+\]
+Let \(x_4=r\). Then
+\[
+x_1=-r,\quad x_2=1-2r,\quad x_3=2-3r,
+\quad
+\vec{x}=
+\begin{bmatrix}x_1\\x_2\\x_3\\x_4\end{bmatrix}
+=
+\begin{bmatrix}0\\1\\2\\0\end{bmatrix}
++r
+\begin{bmatrix}-1\\-2\\-3\\1\end{bmatrix}.
+\]
+
+\medskip
+\textbf{Problem 3.}\; System
+\[
+\begin{cases}
+x_1-x_3=1,\\
+2x_1-2x_2=1,\\
+3x_1-4x_2+x_3=a
+\end{cases}
+\quad\Longrightarrow\quad
+\left[
+\begin{array}{ccc|c}
+1&0&-1&1\\
+2&-2&0&1\\
+3&-4&1&a
+\end{array}
+\right]
+\to
+\left[
+\begin{array}{ccc|c}
+1&0&-1&1\\
+0&1&-1&\tfrac12\\
+0&0&0&\,a-1
+\end{array}
+\right].
+\]
+Last row: \(0= a-1\).
+\[
+a\neq 1 \Rightarrow \text{no solution};\qquad
+a=1 \Rightarrow \text{consistent with one free var} \Rightarrow \text{infinitely many};
+\]
+never exactly one (missing a pivot). For \(a=1\):
+\[
+x_1-x_3=1,\quad x_2-x_3=\tfrac12,\quad
+x_3=r \Rightarrow x_1=1+r,\ x_2=\tfrac12+r,
+\]
+\[
+\vec{x}=
+\begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix}
+=
+\begin{bmatrix}1\\[2pt]\tfrac12\\[2pt]0\end{bmatrix}
++r
+\begin{bmatrix}1\\1\\1\end{bmatrix}.
+\]
+\textit{Summary:}\; (a) \(a\neq1\): no solution;\;
+(b) never exactly one;\;
+(c) \(a=1\): infinitely many (free var \(x_3\)).
+\end{tcolorbox}
+
+
+\end{multicols}
+\end{document}
+

@@ -23,6 +23,14 @@ struct Best {
     int value;
 };
 
+struct Pass {
+    bool fifo;
+    bool sjf;
+    bool srt;
+    bool arvl;
+};
+
+
 int clk = 0;
 static int num;
 
@@ -32,8 +40,8 @@ int getSel(void);
 int verifySel(void);
 int paramCheck(void);
 void newLine(void);
-void enterFun(void);
-void printTable(void);
+bool enterFun(void);
+bool printTable(void);
 void display(int field, char *buf, size_t size);
 void fifo(struct Best comp);
 void reset(void);
@@ -43,7 +51,8 @@ int maxInt(int, int);
 void sjf(struct Best comp);
 void srt(struct Best comp);
 struct Best compare(struct Best best, int flag, int i);
-
+bool isEligible(int flag, int i, int bstVal);
+int idleJump(void);
 void newLine(void){
     puts("");
 }
@@ -67,35 +76,36 @@ bool selFunc(int vrfdSel){
             init = true;
             printf("Enter total number of processes: ");
             scanf("%d", &num);
-            enterFun();
-            return true;
+            return enterFun();
             break;
         case 2: 
             paramCheck();
             reset();
+
             for(int i = 0; i < num; i++){
                 struct Best best = scan(2);
                 fifo(best);
             }
-            printTable();
-            return true;
+            return printTable();
             break;
         case 3:
-            puts("-------selFunc sjf scan-------");
             paramCheck();
             reset();
             for (int i = 0; i < num; i++){
                 struct Best best = scan(3); 
                 sjf(best);
             }
-            printTable();
-            return true;
+            return printTable();
             break;
         case 4:
+            puts("-------SRT-------");
             paramCheck();
-            scan(4);
             reset();
-            return true;
+            for (int i = 0; i < num; i++){
+                struct Best best = scan(4);
+                srt(best);
+            } 
+            return printTable();
             break;
         case 5: 
             puts("Quitting program . . . ");
@@ -106,7 +116,6 @@ bool selFunc(int vrfdSel){
     }
 
 }
-
 int getSel(void){
     while(1){
         printf("Enter selection: ");
@@ -127,7 +136,7 @@ int paramCheck(void){
     }
 }
 
-void enterFun(void){
+bool enterFun(void){
     table = malloc(num * sizeof(struct node));
     
     for(int i = 0;i < num; i++){
@@ -139,15 +148,14 @@ void enterFun(void){
         
         printf("Enter total cycles for process P[%d]: ", table[i].id);
         scanf("%d", &table[i].totalCycles);
-        
-        
+        table[i].totalRem = table[i].totalCycles; //init for SRT
     }
     reset(); 
     printTable();
-  
+    return true;
 }
 
-void printTable(void){
+bool printTable(void){
     printf("%-7s %-7s %-7s %-7s %-7s %-10s\n","ID", "Arrival", "Total", "Start", "End", "Turnaround");
     puts("--------------------------------------------------");
     for(int i = 0; i < num; i++){
@@ -161,6 +169,7 @@ void printTable(void){
         
     }
     newLine();
+    return true;
 }
 
 // modified display: it fills a buffer you give it
@@ -170,43 +179,45 @@ void display(int field, char *buf, size_t size) {
     } else {
         snprintf(buf, size, "%d", field);
     }
-}
+} 
 
-
-
-
- 
 void reset(){
     for(int i = 0; i < num; i++){
         table[i].done = 0;
         table[i].start = -1;
         table[i].end = -1;
         table[i].turnArnd = -1;
+        
     }
     clk = 0;
-    }
+}
 
 struct Best scan(int flag){
     int i = 0;
     struct Best best = {.index = -1, .value = INT_MAX};
     do {
-        if(table[i].done!= 1){
-            switch(flag){
-                case 2:
+        switch(flag){
+            case 2:
+                if(isEligible(2,i)){
                     best = compare(best, flag, i);
-                    break;
-                case 3: 
+                }
+                break;
+            case 3: 
+                if(isEligible(3,i)){
                     best = compare(best, flag, i);
-                    break;
-                case 4:
-                    best = compare(best, flag, i);
-                    break;
                 } 
-        }
+                break;
+            case 4:
+                if(isEligible(4,i)){
+                    best = compare(best, flag, i);
+                }                    
+                break;
+            }
         i++;
-    }while(i < num); 
+        }while(i < num); 
     return best;
 }
+
 
 struct Best compare(struct Best best, int flag, int i){
     int value;
@@ -215,14 +226,10 @@ struct Best compare(struct Best best, int flag, int i){
             value = table[i].arvl;
             break;
         case 3:
-            if (table[i].arvl <= clk){
-                value = table[i].totalCycles;
-            }   
+            value = table[i].totalCycles;
             break;
         case 4:
-            if (table[i].arvl > clk){
-                value = table[i].totalRem;
-            }
+            value = table[i].totalRem;    
             break;
     }
     if (value < best.value){
@@ -244,24 +251,37 @@ void fifo(struct Best comp){
         table[comp.index].done = 1;
 }
 
-
-    /*
-    for(int i = 0; i < num; i++){ //goes through all three procsses, 
-        while(table[i].done == 0){ 
-            for (int j = 1; j < num; j++){ //for loop for checking, j = table[j].arvl assuming earliest    
-                    table[i].start = scan(table[0+i].arvl, table[j].arvl);
+bool isEligible(int flag, int i, int bstVal){
+    struct Pass pass;
+    switch(flag){
+        case 2:
+            if (table[i].done == 0){
+                pass.fifo = true;
+            } else { pass.fifo = false;}
+            return pass.fifo;
+            break;
+        case 3:
+            if(table[i].done == 0 && table[i].arvl <= clk){
+                pass.sjf = true;
+            } else {pass.sjf = false;}
+            return pass.sjf;
+            break;
+        case 4:
+            if(table[i].done == 0 && table[i].arvl <= clk && table[i].totalRem > 0){
+                pass.srt = true;
+            } else { pass.srt = false;}
+            return pass.srt;
+            break;
+        case 5: 
+            if(table[i].done == 0){
+                pass.arvl = true;
+            }else { pass.arvl = false;}
+            return pass.arvl;
+            break;
         }
-            table[i].start = maxInt(table[i].start, clk);
-            table[i].end = (table[i].start + table[i].totalCycles);
-            table[i].turnArnd = (table[i].end - table[i].arvl);
-            clk = table[i].end;
-            table[i].done = 1;
-        }
-    }*/ 
-
+}
 
 int maxInt(int arvl, int currClk){
-    
     if (currClk < arvl){
         return arvl;
     }
@@ -271,32 +291,45 @@ int maxInt(int arvl, int currClk){
     return currClk;
 }
 
+
+
 void sjf(struct Best comp){
     table[comp.index].start = clk;
     table[comp.index].end = table[comp.index].start + table[comp.index].totalCycles;
     table[comp.index].turnArnd = table[comp.index].end - table[comp.index].arvl;
     clk = table[comp.index].end; 
-    table[comp.index].done = 1;
-
-    //reset .done field
-    /*
-    for (int i = 0; i < num; i++){
-        while(table[i].done == 0);{
-            for(int j = 1; j < num; j++){
-                table[i].start = scan(table[0+i].totalCycles, table[j].totalCycles);
-            }
-            
-
-
-        }
-
-    } */
-
-    
+    table[comp.index].done = 1;  
 }
 
-void srt(struct Best comp){
-    
+int idleJump(struct Best best){
+    return table[best.index].arvl;
+}
+
+void srt(struct Best best){
+    if(best.index == -1){
+        if(isEligible(2,best.value)){
+            clk = idleJump();
+        }
+        if(table[best.index].start == -1){
+            table[best.index].start = clk;
+        }
+
+        /*
+    else if(table[best.index].start == -1){ 
+        table[best.index].start = clk;
+    } else {
+        clk += 1;
+        table[best.index].totalRem -= 1;
+        if(table[best.index].totalRem == 0){
+            table[best.index].end = clk;
+            table[best.index].turnArnd = table[best.index].end - table[best.index].arvl;
+            table[best.index].done = 1; */
+        }
+    }
+}
+void initSRT(){
+    reset();
+
 }
 
 

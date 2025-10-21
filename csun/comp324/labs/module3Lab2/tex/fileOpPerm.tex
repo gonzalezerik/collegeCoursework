@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\usepackage[T1]{fontenc}
+
+% --- Helpers for line breaks, floats, captions, and outlines ---
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float}      % provides [H]
+\usepackage{placeins}   % provides \FloatBarrier
+\usepackage{caption}
+\usepackage{bookmark}
+\captionsetup{justification=raggedright,singlelinecheck=false}
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  breakatwhitespace=true,
+  columns=fullflexible
+}
+
+\geometry{margin=1in}
+
+% ---- Macro for bottom-only cropping ----
+% Usage: \cropbottom[<bottom>]{<file>}
+% Example: \cropbottom[150pt]{step1.png}
+\newcommand{\cropbottom}[2][150pt]{%
+  \includegraphics[width=0.9\textwidth, trim={0 #1 0 0}, clip]{#2}%
+}
+
+\begin{document}
+
+\begin{center}
+    {\Large \textbf{COMP 324 Network Security}}\\[4pt]
+    {\large Module 3 Lab 2: File Operations and Permissions}\\[10pt]
+    \textbf{Lab Report}\\[6pt]
+    \textbf{Student: Erik Gonzalez}\\[4pt]
+    \textbf{Professor: Samuel Addington}\\[4pt]
+    \textbf{Date: \today}
+\end{center}
+
+
+
+\section*{Exact Commands Run}
+\begin{lstlisting}
+# Step 1: Creating Files and Directories
+mkdir -p /home/student1/project
+touch /home/student1/project/test.txt
+echo "This is a test file for access control lab" > /home/student1/project/test.txt
+ls -la /home/student1/project/
+
+# Step 2: Understanding File Permissions
+ls -la /home/student1/project/test.txt
+
+# Step 3: Changing File Ownership
+sudo chown root:root /home/student1/project/test.txt
+ls -la /home/student1/project/test.txt
+
+# Step 4: Testing Access as Student
+su - student1 -c "echo 'test' >> /home/student1/project/test.txt"
+\end{lstlisting}
+
+
+\section*{Step 1: Creating Files and Directories}
+\begin{figure}[H] % force placement here
+    \centering
+    \cropbottom[1100pt]{step1.png}
+    \end{figure}
+
+\FloatBarrier % prevent floats crossing into the next section
+
+\section*{Step 2: Understanding File Permissions}
+\begin{figure}[H] % force placement here
+    \centering
+    \cropbottom[1250pt]{step2.png}
+    
+\end{figure}
+
+\noindent \textbf{Recorded output:}
+\begin{lstlisting}
+[student1@threepio ~]$ ls -la /home/student1/project/test.txt
+-rw-r--r-- 1 student1 student1 43 Sep 28 21:47 /home/student1/project/test.txt
+\end{lstlisting}
+
+\noindent \textbf{\\Field Breakdown}
+
+\begin{itemize}
+\item \textbf{File permissions:} 
+\mbox{\texttt{%
+\textcolor{black}{-}%
+\textcolor{blue}{rw-}%
+\textcolor{green}{r--}%
+\textcolor{red}{r--}%
+}} 
+\mbox{(\textcolor{black}{regular file}, 
+\textcolor{blue}{owner: read/write}, 
+\textcolor{green}{group: read only}, 
+\textcolor{red}{others: read only})}
+
+
+    \item \textbf{Hard link count:} \texttt{1} → only one file name points to this file.
+
+    \item \textbf{User owner:} \texttt{student1} → the user that owns the file.
+
+    \item \textbf{Group owner:} \texttt{student1} → the group with access permissions.
+
+    \item \textbf{File size (bytes):} \texttt{43} → the file contains 43 bytes of data.
+
+    \item \textbf{Last modified date/time:} \texttt{Sep 28 21:47} → when the file was last changed.
+
+    \item \textbf{Filename:} \url{/home/student1/project/test.txt} → the file’s full path.
+\end{itemize}
+
+
+\FloatBarrier % keep Step 2 figure/output with Step 2
+
+\section*{Step 3: Changing File Ownership}
+\begin{figure}[H] % force placement here
+    \centering
+    \cropbottom[400pt]{step3.png}
+    \end{figure}
+
+
+\noindent \textbf{\\Updated ownership:}\\
+\texttt{-rw-r--r-- 1 root root 43 Sep 28 21:47 /home/student1/project/test.txt}
+
+
+\FloatBarrier
+
+\section*{Step 4: Testing Access as Student}
+\begin{figure}[H] % force placement here
+    \centering
+    \cropbottom[400pt]{step4.png}
+    
+\end{figure}
+
+\noindent \textbf{Recorded error message:}
+\begin{lstlisting}
+-bash: line 1: /home/student1/project/test.txt: Permission denied
+\end{lstlisting}
+
+\noindent \textbf{\\Error Explanation:}\\
+This occurred because the file is now owned by root, and student1 only has read access, not write access.
+
+
+
+\section*{Observations:}
+\begin{itemize}
+    \item File ownership decides which user can read, write, or modify a file.
+    \item Changing ownership with \texttt{chown} can remove the original user’s ability to edit their own file.
+    \item Permissions \texttt{rw-r--r--} allow only the owner to write, while group and others have read-only access.
+    \item Attempting to append text as a non-owner is prohibited by Linux security.
+ \end{itemize}
+\section*{Conclusion}
+File ownership and permissions are very important in Linux.  
+This lab showed how creating files, changing ownership, and testing access shows how serious Linux is about it's permisions.  
+Only the owner or root can modify files with no resctriction, while others are restricted.  \end{document}
+
