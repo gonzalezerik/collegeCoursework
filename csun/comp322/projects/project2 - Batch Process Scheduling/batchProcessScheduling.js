@@ -1,38 +1,74 @@
-global.procNum = null;
+let procNum = null;
+let p = [];
+const ask = (q) => new Promise((res) => r1.question(q, res));
+
+const readLine = require('readline');
+
+const r1 = readLine.createInterface({
+  input: process.stdin,
+  output: process.stdout 
+});
+
 
 function getSel(){
-
-  r1.enterSel('1): Enter selection: ', (sel) => {
-    r1.close();
-  }); 
-  return sel;
-}
-
-
-function enterFunc(){
-  for(let i = 0; i < num; i++){
-    r1.enterProcId('Enter process id ', (id) => {
-      r1.close();
-    }); 
-
-    r1.enterArrival('Enter arrival cycle for process', (arrival) => {
-      r1.close();
-  });
-
-    r1.enterTotal('Enter total cycles for process: ', (total) => {
-      r1.close();
+  return new Promise((resolve) => {
+    r1.question('Enter selection: ', (selection) => {
+      resolve(parseInt(selection, 10));
     });
+  }); 
+ }
+const pTemp = {};
+
+function enterFunc(i){
+  if (i >= procNum ){
+    r1.close();
+    printTable(p);
+    return true;
+  }
+  console.log("entered enterFunc\n");
+  p = [];
+
+  r1.question('Enter process id: ', (id) => {
+    pTemp.id = parseInt(id);
+
+    r1.question('Enter arrival cycle for process', (arrival) => {
+      pTemp.arrival = parseInt(arrival);
+
+      r1.question('Enter total cycles for process: ', (total) => {
+        pTemp.total = parseInt(total);
+        
+        p.push(pTemp);
+        enterFunc(i + 1);
+      });
+    });
+  });
+  
+}
+function printTable(list){
+  console.log("ID Arrival Total Start End Turnaround\n");
+  console.log("-------------------------------------\n");
+  for (const p of list) {
+    const val = (x) => (x == null ? "": String(x));
+
+    console.log(`${String(p.id).padEnd(7)}`+` ${String(p.arrival).padEnd(7)}`+ `${String(p.total).padEnd(7)}`+ `${val(p.start).padEnd(7)}` + ` ${val(p.end).padEnd(7)}` +` ${val(p.turnaround)}`);
+    console.log();
+  }
+
+
+
 }
 
-function selFunc(int sel){
+
+
+function selFunc(sel){
   switch(sel){ 
     case 1:
-      r1.enterProc('Enter total number of processes: ', (proc) => {
-        procNum = proc;
-        r1.close();
-      }); 
-      return enterFunc();
-      break; 
+        console.log("case1\n");
+        r1.question('Enter total number of processes: ', (num) => {
+        procNum = parseInt(num);
+        enterFunc(0)
+      });
+      
     case 2:
       
       break;
@@ -46,14 +82,9 @@ function selFunc(int sel){
 
       break; 
 
+  }
 }
 
-const readLine = require('readLine');
-
-const r1 = readLine.createInterface({
-  input: process.stdin,
-  output: process.stdout 
-});
       
 
 function menuFunc(){
@@ -71,8 +102,10 @@ function menuFunc(){
 
 
 
-function main() {
+async function main() {
+  let sel;
   do {
     menuFunc();
-  } while (selFunc(getSel()));
-} 
+} while(selFunc(await getSel()));
+}
+main();
