@@ -11,14 +11,15 @@ function getSel(){
     resolve(parseInt(selection, 10)); });
   }); 
  }
-const pTemp = {};
+
+
 async function enterFunc(i = 0) {
-  if (i === 0) p = [];          // only reset once at the start
+  if (i === 0) p = [];          
 
   if (i >= procNum) {
     reset();
     printTable(p);
-    return;                      // return to menu
+    return;                      
   }
 
   const proc = { done: 0, start: -1, end: -1, turnaround: -1 };
@@ -42,7 +43,8 @@ async function enterFunc(i = 0) {
   p.push(proc);
   await enterFunc(i + 1);
 }
-// ---------- Table ----------
+
+
 function printTable(list) {
   console.log("\nID      Arrival Total   Start   End     Turnaround");
   console.log("--------------------------------------------------");
@@ -56,9 +58,7 @@ function printTable(list) {
 }
 
 function reset() {
-  console.log("Reset started\n");
   for (let i = 0; i < p.length; i++) {
-    // console.log(`Resetting p[${i}]`);
     p[i].done = 0;
     p[i].start = -1;
     p[i].end = -1;
@@ -66,7 +66,6 @@ function reset() {
     p[i].totalRem = p[i].total;
   }
   clk = 0;
-  console.log("Reset finished\n");
 }
 function compare(best, flag, i, table){
   let value; 
@@ -85,7 +84,6 @@ function compare(best, flag, i, table){
     }
   }
   return best;
-
 }
 
 function isAllowed(flag, i, clk, table){
@@ -99,9 +97,7 @@ function isAllowed(flag, i, clk, table){
       return pr.done == 0 && pr.arrival <= clk && pr.totalRem > 0;
     default:
       return false;
-  
   }
-
 }
 
 function scan(flag, table, clk){
@@ -113,6 +109,7 @@ function scan(flag, table, clk){
   }
   return best;
 }
+
 function fifoOnce(table) {
   const best = scan(FLAG.FIFO, table, clk);
   if (!best || best.index === -1) return false;   // guard
@@ -126,6 +123,7 @@ function fifoOnce(table) {
   clk = pr.end;
   return true;
 }
+
 function fifo(table) {
   while (table.some(t => t.done === 0)) {
     const ok = fifoOnce(table);
@@ -150,17 +148,32 @@ async function selFunc(sel) {
       fifo(p);
       printTable(p);
       return true; 
+    
     case 3:
-      console.log("SJF not implemented yet.\n");
+      
+      if (!Array.isArray(p) || p.length === 0) {
+        console.log("Enter parameters first (option 1).\n");
+        return true;
+      }
+      reset();          
+      sjf(p);
+      printTable(p);
       return true;
 
     case 4:
-      console.log("SRT not implemented yet.\n");
+      if (!Array.isArray(p) || p.length === 0) {
+        console.log("Enter parameters first (option 1).\n");
+        return true;
+      }
+      reset();     
+      srt(p);
+      printTable(p);
       return true;
-
+    
     case 5:
+      console.log("Quitting program. . .\n");
       r1.close();
-      return false;        // exit
+      return false;        
 
     default:
       console.log("Invalid selection.\n");
@@ -168,31 +181,99 @@ async function selFunc(sel) {
   }
 }
 
+function nextArrivalClk(table, clk) {
+  let next = Infinity;
+  for (const pr of table) {
+    if (pr.done === 0 && pr.arrival > clk && pr.arrival < next) {
+      next = pr.arrival;
+    }
+  }
+  return next === Infinity ? clk : next;
+}
+
+function sjfOnce(table) {
+  const best = scan(FLAG.SJF, table, clk);
+  
+  if (!best || best.index === -1) {
+    const jumped = nextArrivalClk(table, clk);
+    if (jumped === clk) return false; 
+    clk = jumped;
+    return true;
+  }
+
+  const pr = table[best.index];
+  
+  pr.start = clk;                          
+  pr.end = pr.start + pr.total;
+  pr.turnaround = pr.end - pr.arrival;
+  pr.done = 1;
+
+  clk = pr.end;                            
+  return true;
+}
+
+
+function sjf(table) {
+  while (table.some(t => t.done === 0)) {
+    if (!sjfOnce(table)) break; 
+  }
+}
 
       
 
 function menuFunc(){
-  console.log("Batch Scheduling\n");
-  console.log("----------------\n");
-  console.log("1) Enter parameters: ");
-  
-  
-  console.log("2) Schedule processes with FIFO algorithm\n");
-  console.log("3) Schedule processes with SJF algorithm\n");
-  console.log("4) Schedule processes with SRT algorithm\n");
+  console.log("Batch Scheduling");
+  console.log("----------------");
+  console.log("1) Enter parameters: ");  
+  console.log("2) Schedule processes with FIFO algorithm");
+  console.log("3) Schedule processes with SJF algorithm");
+  console.log("4) Schedule processes with SRT algorithm");
   console.log("5) Qut and free memory\n");
 }
 
 
+function srt(table) {
+  
+  for (const pr of table) {
+    if (typeof pr.totalRem !== 'number') pr.totalRem = pr.total;
+  }
+
+  while (table.some(t => t.done === 0)) {
+    const best = scan(FLAG.SRT, table, clk);
+
+    
+    if (!best || best.index === -1) {
+      const jumped = nextArrivalClk(table, clk);
+      if (jumped === clk) break;  
+      clk = jumped;
+      continue;
+    }
+
+    const pr = table[best.index];
+
+    if (pr.start === -1 || pr.start == null) pr.start = clk;
+    
+    pr.totalRem -= 1;
+    clk += 1;
+    
+    if (pr.totalRem === 0) {
+      pr.end = clk;
+      pr.turnaround = pr.end - pr.arrival;
+      pr.done = 1;
+    }    
+  }
+}
 
 
 
 async function main() {
-  let keepGoing = true;
-  while (keepGoing) {
+  let loop = true;
+  while (loop) {
+
     menuFunc();
     const sel = await getSel();
-    keepGoing = await selFunc(sel);   // <-- await this
+    loop = await selFunc(sel);  
+
   }
 }
 main();
