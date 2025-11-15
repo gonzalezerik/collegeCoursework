@@ -1,0 +1,58 @@
+
+  How they break up the workload within the team. Is there someone in charge of certain aspects of the team? Coding, presenting, etc...
+  
+  Our system is comprised of 5 main componentes:
+    - arduino 
+    - speaker 
+    - bluetooth module
+    - gyro/sensor 
+    - phone 
+to us, the most logical sense was to assign each of us one component to focus on and primarly develop for 
+  - Serj Artuni: as everyone works on their module, serj is continually working with our changing code to make sure each component interfaces correctly outside of the simulator
+  - Erik Gonzalez: primarly working on the speaker programming the logic to activate it based on data from the gyro sensor
+  - Tewodros Asres: programming and interfacing with the gyro/tilt sensor to be able to accurately read data from the sensor 
+  - Amin Zoghlami: programming the blueooth module to accurately send alerts to the users phone device 
+  - Hayk Mirzahanyan: programming the phone to recieve data from the blueooth module, and accurately send the correct alerts 
+
+  How have they been working on their documentations? Have you split the work across every member of the group or have you made it so only a single individual manages that?
+
+  We have shared docs, each focused on different parts of our project. For example, we have a form where we document the current bugs and errors, and keep record of past bugs and their fixes
+  
+  We felt it was neccessary that we all bear the same load of work in all aspects of our project. So, for each of our respective module we have a shared doc where the team member continually updates
+    documenting any bugs, the fixes applied, etc. This way the work load is distributed evenly, while detailing the whole process from start to finsih.
+
+
+
+  What tools are they using? How do they communicate and collaborate?
+
+  The main toosl we use is a combination of physical hardware, and virtual hardware. Due to only have a single arduino, bluetooth sensor, gyro, and etc., combined with the very small moments all our
+  schedules align, we were forced to find a virtual solution. That leds us to wokwi, an online website where you're able to play around with a virtual arduino (and modules such as bluetooth and gyro), 
+  you can wire the arduino virtually, pin to pin, to pretty much any arduino module in existence. 
+
+  We decided on this platform due to it being the only one with a VS Code extension. So instead of having to consistently pass around a physical arduino, we can program in a virtual environemnt 
+    and when we are ready to test, we have a meeting to discuss any changes, explanations on how code works etc. This is where serj gets any updated code, or changes that clariyfing so that 
+    he can test it physically. 
+
+
+  What are some of the challenges that they are having and how are they getting around it? Is there a plan or just brut-force?
+
+  main challenges + how we get around :
+    - figuring out how to use wowki vs code extension + how to use with version control
+      - helping each other understand the extension and sharing what we learned on our own time 
+
+    - sending and reading data to a phone via blueooth. Garbled data, means nothing, sometimes will break or send garble halfway, wont send 
+      - reading documentations, seeing example code of how someone correctly sends and reads data from an android/ipone to an arduino 
+
+    - reading data from gyro, correctly intializing and sending the correct I/O instructions 
+      - reading gyro docs helped, excellent tutorials on how to get a gyro sensor to send data 
+
+    - sometimes our code that works in the sim will require tweaking to work on a real arduino. 
+      - yea this one is just brute force until it works really 
+
+    - scheduling, meetings are as consistent as we would like 
+      - we substitute with zoom 
+
+
+  What are some of the things you would be interested in working on if you were to collaborate with members of that team?
+  Do you have any common interest aside from the professional ones?
+
